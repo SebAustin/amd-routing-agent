@@ -67,7 +67,7 @@ STRIDE rows).
 | **I**nfo disclosure | API key echoed in HTTP responses / errors / logs | **Verified false.** `/solve` and `/api/stats` return only answer/route/token/cost fields. Errors surface `ValueError`/`json` messages, never the key. Key is never `log`'d or put in any response model. | Pass |
 | **I**nfo disclosure | Secret in git history / image layers | Clean. `.env` gitignored + absent from full history; real key value has **0** matches across all commits and working tree; `.dockerignore` excludes `.env`; no `ENV`/`ARG` secret in Dockerfile. | Pass (see §3) |
 | **I**nfo disclosure | Verbose stack traces to demo client | FastAPI default debug is off; `HTTPException` details are curated strings. Low risk. | L-2 |
-| **D**enial of service | Oversized/adversarial task input | `POST /solve` caps `prompt` at 8000 chars. `adapter.py` has **no size cap** and loads whole file into memory (M-1). Arithmetic/regex solvers verified non-exploding. | M-1 |
+| **D**enial of service | Oversized/adversarial task input | `POST /solve` caps `prompt` at 8000 chars. `adapter.py` enforces `MAX_INPUT_BYTES`/`MAX_TASKS` guards (M-1, resolved). Arithmetic/regex solvers verified non-exploding. | M-1 |
 | **D**enial of service | ReDoS in classifier/extraction regexes | Reviewed patterns: no nested unbounded quantifiers / catastrophic backtracking constructs. `.DOTALL .+$` in extraction is linear. Low risk. | L-4 |
 | **E**levation of privilege | Container escape / root runtime | Dockerfile runs as non-root `app` user, no `--privileged`, no secret baked in. | Pass |
 | **E**levation of privilege | Webapp binds `0.0.0.0` | Intentional for containerized demo; documented with `# noqa: S104`. Acceptable behind the demo host; note for public deploy (L-1). | L-1 |
@@ -113,7 +113,7 @@ No changes required. This is the correct posture for a routing agent.
 
 | ID | Severity | Title | Impact | Status / Remediation |
 |----|----------|-------|--------|----------------------|
-| M-1 | **MEDIUM** | `adapter.py` has no input-size / task-count cap | A hostile or malformed `/input/tasks.json` (multi-GB, or millions of tasks) is read fully into memory and each task may trigger a paid model call → memory-exhaustion DoS and/or unbounded token spend. | **Open — builder (non-blocking for public release).** Add a max file-size check before `read_text`, and/or a max task-count guard in `_parse_tasks`. Harness-mode only; not reachable from the public web surface. |
+| M-1 | **MEDIUM** | `adapter.py` has no input-size / task-count cap | A hostile or malformed `/input/tasks.json` (multi-GB, or millions of tasks) is read fully into memory and each task may trigger a paid model call → memory-exhaustion DoS and/or unbounded token spend. | **Resolved** — `adapter.py` now enforces `MAX_INPUT_BYTES` (50 MB) and `MAX_TASKS` (10,000) at the input boundary, with regression tests (`tests/test_adapter.py`). Verified rejecting a 10,001-task payload. |
 | M-2 | **MEDIUM** | Demo webapp lacks rate limiting | If the demo URL is public, unauthenticated `POST /solve` can be scripted to burn Fireworks tokens/cost on the maintainer's key. | **Open — deploy-time.** Put the demo behind a rate limit / auth proxy, or run demo in Tier-0-only mode (no key) for the public link. Document in README. |
 | L-1 | LOW | No auth on webapp; binds `0.0.0.0` | Expected for a demo; only a concern if the same instance holds the real key on a public network (overlaps M-2). | Accepted for demo. Note in deploy docs. |
 | L-2 | LOW | Error detail strings returned to client | Curated messages only; low disclosure risk, but keep messages generic when deployed publicly. | Accepted. |
@@ -164,4 +164,4 @@ Confirm immediately before flipping the repo to public:
 - [ ] `.dockerignore` still excludes `.env`; no image pushed to a public registry contains a baked key.
 - [ ] CI remains secret-free and uses no `pull_request_target` (verified).
 - [ ] README/demo copy labels token-savings numbers as **estimated vs a naive baseline** (I-1).
-- [ ] (Optional, non-blocking) Land M-1 input-size guard in `adapter.py` before any untrusted `tasks.json` is run outside the scored harness.
+- [x] M-1 input-size/count guard landed in `adapter.py` (commit b18d5cc).
