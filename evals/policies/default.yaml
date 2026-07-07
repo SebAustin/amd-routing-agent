@@ -1,0 +1,17 @@
+# Default routing policy. See routing_agent.config.Policy for schema.
+confidence_threshold: 0.5
+logprob_threshold: -1.0
+retry_budget: 1
+objective: raw_tokens
+max_tokens:
+  classification: 8
+  multiple_choice: 8
+  extraction: 24
+  short_qa: 32
+  code: 256
+  summarization: 160
+  general: 96
+  arithmetic: 32
+  date_math: 32
+  string_op: 32
+  unit_conversion: 32
