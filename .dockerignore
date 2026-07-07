@@ -22,7 +22,8 @@ build/
 tests/
 
 # Docs / planning artifacts — not needed at runtime.
-README.md
+# (README.md must ship: pyproject declares it as the package readme and
+# hatchling fails the in-image `uv sync` without it.)
 PLAN.md
 ASSUMPTIONS.md
 

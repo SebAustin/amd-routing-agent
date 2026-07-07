@@ -30,7 +30,9 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
 
-# Now copy source and install the project itself.
+# Now copy source and install the project itself. README.md is required by
+# hatchling (pyproject `readme` field) to build the project wheel.
+COPY README.md ./
 COPY src/ ./src/
 COPY evals/ ./evals/
 RUN uv sync --frozen --no-dev
