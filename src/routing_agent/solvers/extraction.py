@@ -16,9 +16,14 @@ from routing_agent.models import Task
 from routing_agent.solvers import SolverResult
 
 _EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
-_URL_RE = re.compile(r"https?://[^\s,;\"')\]]+")
+# Excludes a trailing "." from the match so a sentence-ending period right
+# after the URL (e.g. "...v2/docs.") isn't swallowed into it; a "." that is
+# genuinely part of the URL (mid-path, e.g. "v2.1") is unaffected since the
+# exclusion only applies to the final character of the match.
+_URL_RE = re.compile(r"https?://[^\s,;\"')\]]+[^\s,;\"')\].]")
 _PHONE_RE = re.compile(r"(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b")
-_NUMBER_RE = re.compile(r"-?\d+(?:\.\d+)?")
+# Allows comma thousands-separators (e.g. "1,250,000") as a single number.
+_NUMBER_RE = re.compile(r"-?\d[\d,]*(?:\.\d+)?")
 _ISO_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
 
 # Ordered most-specific-first: "phone number" must be checked (and, if

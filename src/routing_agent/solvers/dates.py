@@ -42,7 +42,12 @@ _WEEKDAY_RE = re.compile(
 )
 
 _BETWEEN_RE = re.compile(
-    r"how\s+many\s+days\s+(?:are\s+)?between\s+(?P<date1>.+?)\s+and\s+(?P<date2>.+?)\s*\??$",
+    r"how\s+many\s+days\s+(?:are\s+)?between\s+(?P<date1>.+?)\s+and\s+(?P<date2>.+?)\s*"
+    r"(?:\(.*\))?\s*\??$",
+    re.IGNORECASE,
+)
+_FROM_TO_RE = re.compile(
+    r"how\s+many\s+days\s+(?:are\s+there\s+)?from\s+(?P<date1>.+?)\s+to\s+(?P<date2>.+?)\s*\??$",
     re.IGNORECASE,
 )
 
@@ -99,7 +104,7 @@ def try_solve(task: Task, task_type: TaskType) -> SolverResult:
             return SolverResult(answer=None, confident=False)
         return SolverResult(answer=_WEEKDAY_NAMES[target.weekday()], confident=True)
 
-    between_match = _BETWEEN_RE.search(prompt)
+    between_match = _BETWEEN_RE.search(prompt) or _FROM_TO_RE.search(prompt)
     if between_match:
         first = _parse_date(between_match.group("date1"))
         second = _parse_date(between_match.group("date2"))

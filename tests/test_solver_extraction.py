@@ -80,3 +80,31 @@ def test_returns_not_confident_on_wrong_task_type():
         _task("Extract the email from: hello@example.com"), TaskType.GENERAL
     )
     assert result.confident is False
+
+
+def test_extracts_comma_grouped_number_as_single_value():
+    # Regression: the number regex previously split "1,250,000" into three
+    # separate matches (found via eval audit, extraction-011).
+    result = extraction.try_solve(
+        _task(
+            'Extract the number from this text: "Total revenue for the quarter '
+            'reached 1,250,000 dollars."'
+        ),
+        TaskType.EXTRACTION,
+    )
+    assert result.confident is True
+    assert result.answer == "1,250,000"
+
+
+def test_extracts_url_without_trailing_sentence_period():
+    # Regression: the URL regex previously swallowed a sentence-ending "."
+    # right after the URL (found via eval audit, extraction-017).
+    result = extraction.try_solve(
+        _task(
+            'Extract the URL from this text: "The API reference can be found '
+            'at https://api.dataservice.com/v2/docs."'
+        ),
+        TaskType.EXTRACTION,
+    )
+    assert result.confident is True
+    assert result.answer == "https://api.dataservice.com/v2/docs"

@@ -36,6 +36,12 @@ def _extract_target(prompt: str) -> str | None:
     return spans[-1]
 
 
+# "reverse the order of the words" (or "word order") means token-reversal,
+# not character-reversal — checked before the generic _REVERSE_RE so the
+# more specific shape always wins.
+_REVERSE_WORD_ORDER_RE = re.compile(
+    r"\breverse\b.*\b(order of the words|word order)\b", re.IGNORECASE
+)
 _REVERSE_RE = re.compile(r"\breverse\b", re.IGNORECASE)
 _UPPER_RE = re.compile(r"\buppercase\b|\bupper[- ]?case\b", re.IGNORECASE)
 _LOWER_RE = re.compile(r"\blowercase\b|\blower[- ]?case\b", re.IGNORECASE)
@@ -73,6 +79,9 @@ def try_solve(task: Task, task_type: TaskType) -> SolverResult:
     target = _extract_target(prompt)
     if target is None:
         return SolverResult(answer=None, confident=False)
+
+    if _REVERSE_WORD_ORDER_RE.search(prompt):
+        return SolverResult(answer=" ".join(reversed(target.split())), confident=True)
 
     if _REVERSE_RE.search(prompt):
         return SolverResult(answer=target[::-1], confident=True)

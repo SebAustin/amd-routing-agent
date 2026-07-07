@@ -84,3 +84,15 @@ def test_returns_not_confident_on_unsupported_operation():
 def test_returns_not_confident_on_wrong_task_type():
     result = strings.try_solve(_task('Reverse "hello"'), TaskType.GENERAL)
     assert result.confident is False
+
+
+def test_solves_reverse_word_order_distinct_from_char_reverse():
+    # Regression: "reverse the order of the words" must reverse token order,
+    # not character order — found via eval audit (strings-016 previously
+    # returned "eulb si yks ehT" from naive char reversal).
+    result = strings.try_solve(
+        _task('Reverse the order of the words in "The sky is blue" (keep each word normally).'),
+        TaskType.STRING_OP,
+    )
+    assert result.confident is True
+    assert result.answer == "blue is sky The"
