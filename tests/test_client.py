@@ -142,6 +142,34 @@ def test_complete_merges_reasoning_profile_params():
 
 
 @respx.mock
+def test_complete_skips_reasoning_profile_when_disabled():
+    """The eval harness's --baseline mode must reflect a naive/untuned
+    deployment, so it opts out of the registry's reasoning-suppression
+    profile via apply_reasoning_profile=False.
+    """
+    import json
+
+    captured: list[dict] = []
+
+    def _capture(request: httpx.Request) -> httpx.Response:
+        captured.append(json.loads(request.content))
+        return _chat_response("ok", prompt_tokens=90, completion_tokens=5)
+
+    respx.post(f"{_BASE_URL}/chat/completions").mock(side_effect=_capture)
+    client = FireworksClient(api_key="fw_test", base_url=_BASE_URL)
+
+    client.complete(
+        model_info=_GPT_OSS_20B,
+        messages=[{"role": "user", "content": "hi"}],
+        max_tokens=64,
+        route="baseline:t4",
+        apply_reasoning_profile=False,
+    )
+
+    assert "reasoning_effort" not in captured[0]
+
+
+@respx.mock
 def test_complete_floors_max_tokens_at_model_min_viable():
     import json
 

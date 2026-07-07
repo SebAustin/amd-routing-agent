@@ -86,6 +86,7 @@ class FireworksClient:
         stop: list[str] | None = None,
         route: str = "",
         temperature: float = 0.0,
+        apply_reasoning_profile: bool = True,
     ) -> CompletionResult:
         """Issue a chat completion, retrying once with a larger cap if the
         first attempt returns empty content (the reasoning-token trap:
@@ -93,13 +94,24 @@ class FireworksClient:
         content is emitted).
 
         The model's `reasoning_profile` params are merged into the request
-        to suppress/limit reasoning. `max_tokens` is floored at the model's
-        `min_viable_max_tokens` so a caller-supplied tight cap never
-        triggers a guaranteed-empty first call.
+        to suppress/limit reasoning, unless `apply_reasoning_profile=False`
+        (used by the eval harness's `--baseline` mode, which must reflect a
+        naive/untuned deployment rather than benefit from this router's own
+        reasoning-suppression tuning — see evals/run_eval.py). `max_tokens`
+        is floored at the model's `min_viable_max_tokens` so a
+        caller-supplied tight cap never triggers a guaranteed-empty first
+        call.
         """
         effective_max_tokens = max(max_tokens, model_info.min_viable_max_tokens)
         result = self._call(
-            model_info, messages, effective_max_tokens, stop, route, temperature, retry=False
+            model_info,
+            messages,
+            effective_max_tokens,
+            stop,
+            route,
+            temperature,
+            retry=False,
+            apply_reasoning_profile=apply_reasoning_profile,
         )
         if result.content.strip():
             return result
@@ -110,7 +122,14 @@ class FireworksClient:
         )
         retry_max_tokens = effective_max_tokens * _RETRY_MAX_TOKENS_MULTIPLIER
         return self._call(
-            model_info, messages, retry_max_tokens, stop, route, temperature, retry=True
+            model_info,
+            messages,
+            retry_max_tokens,
+            stop,
+            route,
+            temperature,
+            retry=True,
+            apply_reasoning_profile=apply_reasoning_profile,
         )
 
     def _call(
@@ -122,6 +141,7 @@ class FireworksClient:
         route: str,
         temperature: float,
         retry: bool,
+        apply_reasoning_profile: bool = True,
     ) -> CompletionResult:
         request_kwargs: dict[str, object] = {
             "model": model_info.id,
@@ -131,7 +151,8 @@ class FireworksClient:
         }
         if stop:
             request_kwargs["stop"] = stop
-        request_kwargs.update(model_info.reasoning_profile)
+        if apply_reasoning_profile:
+            request_kwargs.update(model_info.reasoning_profile)
 
         started = time.monotonic()
         response = self._sdk.chat.completions.create(**request_kwargs)
