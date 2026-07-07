@@ -1,0 +1,1672 @@
+{
+  "mode": "dry-run",
+  "total_tasks": 200,
+  "correct": 65,
+  "accuracy": 0.325,
+  "by_category": {
+    "arithmetic": {
+      "total": 35,
+      "correct": 8,
+      "accuracy": 0.2286
+    },
+    "classification": {
+      "total": 30,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "code": {
+      "total": 10,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "dates": {
+      "total": 25,
+      "correct": 16,
+      "accuracy": 0.64
+    },
+    "extraction": {
+      "total": 25,
+      "correct": 20,
+      "accuracy": 0.8
+    },
+    "multiple_choice": {
+      "total": 20,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "short_qa": {
+      "total": 15,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "strings": {
+      "total": 20,
+      "correct": 13,
+      "accuracy": 0.65
+    },
+    "summarization": {
+      "total": 5,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "units": {
+      "total": 15,
+      "correct": 8,
+      "accuracy": 0.5333
+    }
+  },
+  "route_distribution": {
+    "tier0": 65,
+    "would-call:accounts/fireworks/models/gpt-oss-120b": 48,
+    "would-call:accounts/fireworks/models/gpt-oss-20b": 77,
+    "would-call:accounts/fireworks/models/deepseek-v4-flash": 10
+  },
+  "zero_token_tasks": 200,
+  "zero_token_rate": 1.0,
+  "error_count": 0,
+  "errors": [],
+  "results": [
+    {
+      "id": "arithmetic-001",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-002",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-003",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-004",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-005",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-006",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-007",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-008",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-009",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-010",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-011",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-012",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-013",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-014",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-015",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-016",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-017",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-018",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-019",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-020",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-021",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-022",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-023",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-024",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-025",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-026",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-027",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-028",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-029",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-030",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-031",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "arithmetic-032",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-033",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-034",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "arithmetic-035",
+      "category": "arithmetic",
+      "task_type": "arithmetic",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-001",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-002",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-003",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-004",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-005",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-006",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-007",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-008",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-009",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-010",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-011",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-012",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-013",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-014",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-015",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-016",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-017",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-018",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-019",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-020",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-021",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-022",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-023",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-024",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-025",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-026",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-027",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-028",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-029",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "classification-030",
+      "category": "classification",
+      "task_type": "classification",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-001",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-002",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-003",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-004",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-005",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-006",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-007",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-008",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-009",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "code-010",
+      "category": "code",
+      "task_type": "code",
+      "route": "would-call:accounts/fireworks/models/deepseek-v4-flash",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-001",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-002",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-003",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-004",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-005",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-006",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-007",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-008",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-009",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-010",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-011",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-012",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-013",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-014",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-015",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-016",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-017",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-018",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-019",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-020",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-021",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-022",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-023",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "dates-024",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "dates-025",
+      "category": "dates",
+      "task_type": "date_math",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-001",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-002",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "extraction-003",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-004",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-005",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-006",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-007",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-008",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-009",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "extraction-010",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-011",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-012",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-013",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "extraction-014",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-015",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "extraction-016",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-017",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-018",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-019",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-020",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-021",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-022",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-023",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-024",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "extraction-025",
+      "category": "extraction",
+      "task_type": "extraction",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-001",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-002",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-003",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-004",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-005",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-006",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-007",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-008",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-009",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-010",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-011",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-012",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-013",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-014",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-015",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-016",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-017",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-018",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-019",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "multiple_choice-020",
+      "category": "multiple_choice",
+      "task_type": "multiple_choice",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-001",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-002",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-003",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-004",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-005",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-006",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-007",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-008",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-009",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-010",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-011",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-012",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-013",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-014",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "short_qa-015",
+      "category": "short_qa",
+      "task_type": "short_qa",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-001",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-002",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-003",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-004",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-005",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-006",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-007",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-008",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-009",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-010",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-011",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-012",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-013",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-014",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-015",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-016",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-017",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-018",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "strings-019",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "strings-020",
+      "category": "strings",
+      "task_type": "string_op",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-20b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "summarization-001",
+      "category": "summarization",
+      "task_type": "summarization",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "summarization-002",
+      "category": "summarization",
+      "task_type": "summarization",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "summarization-003",
+      "category": "summarization",
+      "task_type": "summarization",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "summarization-004",
+      "category": "summarization",
+      "task_type": "summarization",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "summarization-005",
+      "category": "summarization",
+      "task_type": "summarization",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-001",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-002",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-003",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-004",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-005",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-006",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-007",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-008",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-009",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-010",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-011",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-012",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-013",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "would-call:accounts/fireworks/models/gpt-oss-120b",
+      "correct": false,
+      "error": null
+    },
+    {
+      "id": "units-014",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    },
+    {
+      "id": "units-015",
+      "category": "units",
+      "task_type": "unit_conversion",
+      "route": "tier0",
+      "correct": true,
+      "error": null
+    }
+  ],
+  "policy": "tuned",
+  "elapsed_s": 0.01
+}
