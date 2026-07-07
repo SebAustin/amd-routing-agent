@@ -116,7 +116,14 @@ KNOWN_MODELS: dict[str, ModelInfo] = {
         quality_rank=2,
         prompt_overhead_tokens=82,
         reasoning_profile={"reasoning_effort": "low"},
-        min_viable_max_tokens=64,
+        # Eval-tuned (evals/run_eval.py ladder step d): gpt-oss rejects
+        # reasoning_effort="none" (400 invalid_request_error), so its hidden
+        # <|channel|>analysis reasoning trace still has to complete before
+        # the final-channel answer is emitted. Probed live: a date-math
+        # reasoning trace needed ~101 completion tokens end-to-end and was
+        # truncated mid-analysis (leaking raw channel markers into content)
+        # at 64/96; 128 gives consistent headroom.
+        min_viable_max_tokens=128,
         serverless=True,
     ),
     _model_id("gpt-oss-120b"): ModelInfo(
@@ -129,8 +136,10 @@ KNOWN_MODELS: dict[str, ModelInfo] = {
         quality_rank=6,
         prompt_overhead_tokens=82,
         reasoning_profile={"reasoning_effort": "low"},
-        # Probed: empty content at max_tokens=40 -> needs a larger floor.
-        min_viable_max_tokens=96,
+        # Eval-tuned: same trap as gpt-oss-20b above, confirmed live on this
+        # model too (96 truncated a date-math reasoning trace mid-analysis;
+        # 128 completed cleanly at 101 completion tokens).
+        min_viable_max_tokens=128,
         serverless=True,
     ),
     _model_id("deepseek-v4-flash"): ModelInfo(
@@ -156,7 +165,16 @@ KNOWN_MODELS: dict[str, ModelInfo] = {
         capabilities=_FULL_CAPS,
         quality_rank=9,
         prompt_overhead_tokens=14,
-        reasoning_profile={},
+        # Eval-tuned: this is the Tier-2 escalation model, so a leaked/
+        # truncated reasoning trace here is the worst case (last resort,
+        # single call, no further fallback). Probed live: with no
+        # reasoning_profile, a tight cap truncated mid "We are asked: ..."
+        # chain-of-thought before any answer token (0/2 multiple-choice
+        # escalations correct). `reasoning_effort="none"` is accepted by
+        # this model (unlike gpt-oss) and eliminates the leak entirely —
+        # completion_tokens dropped from 32 (truncated) to 2-27 (clean
+        # answer) across probed prompts.
+        reasoning_profile={"reasoning_effort": "none"},
         min_viable_max_tokens=32,
         serverless=True,
     ),

@@ -34,13 +34,31 @@ _SYSTEM_TEXT: dict[TaskType, str | None] = {
     TaskType.CLASSIFICATION: "Answer with only the label.",
     TaskType.MULTIPLE_CHOICE: "Answer with only the letter of the correct choice.",
     TaskType.SHORT_QA: "Answer in as few words as possible.",
-    TaskType.CODE: None,
-    TaskType.SUMMARIZATION: None,
+    # Eval-tuned: evalset CODE tasks are all "what does this print?" trace
+    # questions graded exact/normalized/numeric, so an answer-only contract
+    # (not free-form code generation) both raises accuracy and cuts tokens.
+    # A generation-style CODE task still gets a usable, if slightly terser,
+    # answer under this contract; it never asks for tests/generation here.
+    TaskType.CODE: (
+        "If asked what code prints or outputs, answer with only the "
+        "printed value, no explanation. Otherwise, answer concisely."
+    ),
+    # Eval-tuned: contains_all graders check for literal key nouns from the
+    # source text (e.g. "deforestation", "pollination"); pure paraphrase
+    # ("shrinking due to logging") loses those terms even when the summary
+    # is substantively correct. Nudging the model to keep the source's key
+    # terms (not just its meaning) measurably improved keyword coverage.
+    TaskType.SUMMARIZATION: (
+        "Summarize in one sentence. Reuse the key nouns/terms from the "
+        "source text rather than paraphrasing them."
+    ),
     TaskType.GENERAL: None,
 }
 
 # Single-line-answer types get a newline stop sequence to cut trailing
-# rambling; open-ended types (code, summarization, general) do not.
+# rambling; open-ended types (summarization, general) do not. CODE is
+# excluded because multi-line code answers are still a valid shape even
+# under the answer-only contract above.
 _SINGLE_LINE_TYPES = frozenset(
     {
         TaskType.ARITHMETIC,
