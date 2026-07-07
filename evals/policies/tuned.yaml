@@ -1,0 +1,49 @@
+# Tuned routing policy — winner of the eval ladder (PLAN.md §3 step d).
+#
+# Values are identical to default.yaml: per-task-type max_tokens tuning was
+# investigated (see evals/README.md "Tuning notes") and found to have no
+# further effect once a value clears each Tier-1 model's
+# min_viable_max_tokens floor, because models self-terminate at their
+# natural answer length and unused max_tokens budget is never billed. The
+# real wins from this tuning pass live in code, not YAML:
+#   - src/routing_agent/registry.py: gpt-oss-20b/120b min_viable_max_tokens
+#     64->128 (fixes truncated reasoning-channel leaks on harder
+#     date/arithmetic prompts); deepseek-v4-pro reasoning_profile
+#     {"reasoning_effort": "none"} (eliminates its Tier-2 escalation
+#     thinking-leak entirely).
+#   - src/routing_agent/prompts.py: CODE and SUMMARIZATION got answer-only /
+#     term-preserving system contracts (CODE was previously unconstrained
+#     and lost every "what does this print" trace question to explanatory
+#     prose; SUMMARIZATION now nudges the model to reuse source keywords so
+#     contains_all grading passes on paraphrase-heavy summaries).
+#   - src/routing_agent/classifier.py: 8 regex bugs fixed (multiple_choice
+#     inline "A) ... B) ..." detection, arithmetic word-problem phrasing,
+#     code "what does this print" phrasing, date "from X to Y" phrasing,
+#     string ops, unit conversion "how many X are in Y" phrasing,
+#     classification "identify the language" phrasing) — see
+#     tests/test_classifier.py::test_classify_regression_table.
+#   - src/routing_agent/solvers/{dates,extraction,strings}.py: 4 Tier-0
+#     precision bugs fixed (comma-grouped numbers, URL trailing-period
+#     capture, word-order vs character reversal, "from X to Y" date-diff
+#     phrasing) — each was a *wrong* zero-token answer at full confidence,
+#     the worst failure mode for a precision-first solver.
+#
+# Net effect measured by evals/run_eval.py --policy tuned (see
+# evals/reports/tuned-live.json): 91.5% -> 99.5% overall accuracy on the
+# same evalset, zero-token rate 30.5% -> 32.5%.
+confidence_threshold: 0.5
+logprob_threshold: -1.0
+retry_budget: 1
+objective: raw_tokens
+max_tokens:
+  classification: 8
+  multiple_choice: 8
+  extraction: 24
+  short_qa: 32
+  code: 256
+  summarization: 160
+  general: 96
+  arithmetic: 32
+  date_math: 32
+  string_op: 32
+  unit_conversion: 32
