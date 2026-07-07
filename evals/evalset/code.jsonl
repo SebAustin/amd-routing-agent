@@ -1,0 +1,10 @@
+{"id": "code-001", "category": "code", "prompt": "What does this Python code print?\n\nx = [1, 2, 3]\ny = x\ny.append(4)\nprint(x)", "expected": "[1, 2, 3, 4]", "grader": "normalized", "grader_args": {}}
+{"id": "code-002", "category": "code", "prompt": "What does this Python code print?\n\ndef f(n):\n    if n <= 1:\n        return 1\n    return n * f(n-1)\nprint(f(5))", "expected": "120", "grader": "numeric", "grader_args": {}}
+{"id": "code-003", "category": "code", "prompt": "What does this Python code print?\n\ns = 'hello'\nprint(s[1:4])", "expected": "ell", "grader": "exact", "grader_args": {}}
+{"id": "code-004", "category": "code", "prompt": "What does this Python code print?\n\nprint(3 + 4 * 2)", "expected": "11", "grader": "numeric", "grader_args": {}}
+{"id": "code-005", "category": "code", "prompt": "What does this Python code print?\n\nd = {'a': 1, 'b': 2}\nd['c'] = 3\nprint(len(d))", "expected": "3", "grader": "numeric", "grader_args": {}}
+{"id": "code-006", "category": "code", "prompt": "What does this Python code print?\n\nfor i in range(3):\n    print(i, end='')", "expected": "012", "grader": "exact", "grader_args": {}}
+{"id": "code-007", "category": "code", "prompt": "What does this Python code print?\n\nprint(list(range(5))[-2])", "expected": "3", "grader": "numeric", "grader_args": {}}
+{"id": "code-008", "category": "code", "prompt": "What does this Python code print?\n\na, b = 5, 10\na, b = b, a\nprint(a, b)", "expected": "10 5", "grader": "normalized", "grader_args": {}}
+{"id": "code-009", "category": "code", "prompt": "What does this Python code print?\n\nprint('abc' * 3)", "expected": "abcabcabc", "grader": "exact", "grader_args": {}}
+{"id": "code-010", "category": "code", "prompt": "What does this Python code print?\n\nprint(sum([x for x in range(1, 6) if x % 2 == 0]))", "expected": "6", "grader": "numeric", "grader_args": {}}

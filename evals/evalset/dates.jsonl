@@ -1,0 +1,25 @@
+{"id": "dates-001", "category": "dates", "prompt": "What day of the week was January 1, 2025?", "expected": "Wednesday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-002", "category": "dates", "prompt": "What day of the week is July 4, 2025?", "expected": "Friday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-003", "category": "dates", "prompt": "What day of the week is December 25, 2025?", "expected": "Thursday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-004", "category": "dates", "prompt": "What day of the week is January 1, 2026?", "expected": "Thursday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-005", "category": "dates", "prompt": "What day of the week is July 11, 2026?", "expected": "Saturday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-006", "category": "dates", "prompt": "What day of the week is March 15, 2025?", "expected": "Saturday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-007", "category": "dates", "prompt": "What day of the week is November 27, 2025?", "expected": "Thursday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-008", "category": "dates", "prompt": "What day of the week is February 14, 2026?", "expected": "Saturday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-009", "category": "dates", "prompt": "What day of the week is September 1, 2025?", "expected": "Monday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-010", "category": "dates", "prompt": "What day of the week is June 19, 2026?", "expected": "Friday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-011", "category": "dates", "prompt": "How many days are there between January 1, 2025 and March 1, 2025 (exclusive of the start date, inclusive of the end date)?", "expected": "59", "grader": "numeric", "grader_args": {}}
+{"id": "dates-012", "category": "dates", "prompt": "How many days are there from June 15, 2025 to September 1, 2025?", "expected": "78", "grader": "numeric", "grader_args": {}}
+{"id": "dates-013", "category": "dates", "prompt": "How many days are there from November 1, 2025 to December 25, 2025?", "expected": "54", "grader": "numeric", "grader_args": {}}
+{"id": "dates-014", "category": "dates", "prompt": "How many days are there from February 1, 2025 to February 1, 2026?", "expected": "365", "grader": "numeric", "grader_args": {}}
+{"id": "dates-015", "category": "dates", "prompt": "How many days are there from January 1, 2025 to December 31, 2025?", "expected": "364", "grader": "numeric", "grader_args": {}}
+{"id": "dates-016", "category": "dates", "prompt": "What date is 30 days after January 15, 2025? Answer in YYYY-MM-DD format.", "expected": "2025-02-14", "grader": "exact", "grader_args": {}}
+{"id": "dates-017", "category": "dates", "prompt": "What date is 20 days after December 20, 2025? Answer in YYYY-MM-DD format.", "expected": "2026-01-09", "grader": "exact", "grader_args": {}}
+{"id": "dates-018", "category": "dates", "prompt": "What date is 45 days before June 1, 2025? Answer in YYYY-MM-DD format.", "expected": "2025-04-17", "grader": "exact", "grader_args": {}}
+{"id": "dates-019", "category": "dates", "prompt": "What date is 100 days after January 1, 2026? Answer in YYYY-MM-DD format.", "expected": "2026-04-11", "grader": "exact", "grader_args": {}}
+{"id": "dates-020", "category": "dates", "prompt": "What date is 365 days after February 15, 2025? Answer in YYYY-MM-DD format.", "expected": "2026-02-15", "grader": "exact", "grader_args": {}}
+{"id": "dates-021", "category": "dates", "prompt": "Is the year 2028 a leap year? Answer yes or no.", "expected": "yes", "grader": "normalized", "grader_args": {}}
+{"id": "dates-022", "category": "dates", "prompt": "Is the year 2025 a leap year? Answer yes or no.", "expected": "no", "grader": "normalized", "grader_args": {}}
+{"id": "dates-023", "category": "dates", "prompt": "How many days are in February 2028?", "expected": "29", "grader": "numeric", "grader_args": {}}
+{"id": "dates-024", "category": "dates", "prompt": "What day of the week is April 22, 2025?", "expected": "Tuesday", "grader": "normalized", "grader_args": {}}
+{"id": "dates-025", "category": "dates", "prompt": "What day of the week is March 8, 2026?", "expected": "Sunday", "grader": "normalized", "grader_args": {}}

@@ -1,0 +1,15 @@
+{"id": "units-001", "category": "units", "prompt": "Convert 100 kilometers to miles. Round to 1 decimal place.", "expected": "62.1", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-002", "category": "units", "prompt": "Convert 26.2 miles to kilometers. Round to 1 decimal place.", "expected": "42.2", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-003", "category": "units", "prompt": "Convert 50 miles to kilometers. Round to 1 decimal place.", "expected": "80.5", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-004", "category": "units", "prompt": "Convert 75 kilograms to pounds. Round to 1 decimal place.", "expected": "165.3", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-005", "category": "units", "prompt": "Convert 180 pounds to kilograms. Round to 1 decimal place.", "expected": "81.6", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-006", "category": "units", "prompt": "Convert 10 kilograms to pounds. Round to 1 decimal place.", "expected": "22.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-007", "category": "units", "prompt": "Convert 100 degrees Celsius to Fahrenheit. Round to 1 decimal place.", "expected": "212.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-008", "category": "units", "prompt": "Convert 0 degrees Celsius to Fahrenheit. Round to 1 decimal place.", "expected": "32.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-009", "category": "units", "prompt": "Convert 98.6 degrees Fahrenheit to Celsius. Round to 1 decimal place.", "expected": "37.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-010", "category": "units", "prompt": "Convert -40 degrees Celsius to Fahrenheit. Round to 1 decimal place.", "expected": "-40.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-011", "category": "units", "prompt": "Convert 25 degrees Celsius to Kelvin. Round to 1 decimal place.", "expected": "298.1", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-012", "category": "units", "prompt": "Convert 300 Kelvin to degrees Celsius. Round to 1 decimal place.", "expected": "26.9", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-013", "category": "units", "prompt": "Using 1 GB = 1024 MB, how many MB are in 1 GB?", "expected": "1024", "grader": "numeric", "grader_args": {}}
+{"id": "units-014", "category": "units", "prompt": "Using 1 GB = 1024 MB, convert 2048 MB to GB. Round to 1 decimal place.", "expected": "2.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}
+{"id": "units-015", "category": "units", "prompt": "Using 1 MB = 1000 KB (decimal convention), convert 500000 KB to MB. Round to 1 decimal place.", "expected": "500.0", "grader": "numeric", "grader_args": {"tolerance": 0.1}}

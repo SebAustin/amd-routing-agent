@@ -1,0 +1,20 @@
+{"id": "strings-001", "category": "strings", "prompt": "Reverse the string \"hello world\".", "expected": "dlrow olleh", "grader": "exact", "grader_args": {}}
+{"id": "strings-002", "category": "strings", "prompt": "Reverse the word \"Fireworks\".", "expected": "skroweriF", "grader": "exact", "grader_args": {}}
+{"id": "strings-003", "category": "strings", "prompt": "How many times does the letter \"s\" appear in \"mississippi\"?", "expected": "4", "grader": "numeric", "grader_args": {}}
+{"id": "strings-004", "category": "strings", "prompt": "How many times does the letter \"e\" appear in \"engineering\"?", "expected": "3", "grader": "numeric", "grader_args": {}}
+{"id": "strings-005", "category": "strings", "prompt": "How many words are in the sentence \"The quick brown fox jumps over the lazy dog\"?", "expected": "9", "grader": "numeric", "grader_args": {}}
+{"id": "strings-006", "category": "strings", "prompt": "How many words are in the sentence \"Data engineering is the backbone of modern analytics pipelines\"?", "expected": "9", "grader": "numeric", "grader_args": {}}
+{"id": "strings-007", "category": "strings", "prompt": "Convert \"token efficient routing agent\" to uppercase.", "expected": "TOKEN EFFICIENT ROUTING AGENT", "grader": "exact", "grader_args": {}}
+{"id": "strings-008", "category": "strings", "prompt": "Convert \"HACKATHON SUBMISSION DEADLINE\" to lowercase.", "expected": "hackathon submission deadline", "grader": "exact", "grader_args": {}}
+{"id": "strings-009", "category": "strings", "prompt": "What is the 3rd character of the word \"benchmark\" (counting the first letter as position 1)?", "expected": "n", "grader": "exact", "grader_args": {}}
+{"id": "strings-010", "category": "strings", "prompt": "What is the 5th character of the word \"algorithm\" (counting the first letter as position 1)?", "expected": "r", "grader": "exact", "grader_args": {}}
+{"id": "strings-011", "category": "strings", "prompt": "What is the last character of the word \"python\"?", "expected": "n", "grader": "exact", "grader_args": {}}
+{"id": "strings-012", "category": "strings", "prompt": "Sort the letters of \"dcba\" alphabetically and give the resulting string.", "expected": "abcd", "grader": "exact", "grader_args": {}}
+{"id": "strings-013", "category": "strings", "prompt": "Sort the letters of \"zebra\" alphabetically and give the resulting string.", "expected": "aberz", "grader": "exact", "grader_args": {}}
+{"id": "strings-014", "category": "strings", "prompt": "How many vowels (a, e, i, o, u) are in the word \"beautiful\"?", "expected": "5", "grader": "numeric", "grader_args": {}}
+{"id": "strings-015", "category": "strings", "prompt": "How many letters are in the word \"supercalifragilisticexpialidocious\"?", "expected": "34", "grader": "numeric", "grader_args": {}}
+{"id": "strings-016", "category": "strings", "prompt": "Reverse the order of the words in \"The sky is blue\" (keep each word spelled normally).", "expected": "blue is sky The", "grader": "exact", "grader_args": {}}
+{"id": "strings-017", "category": "strings", "prompt": "Convert \"the great gatsby\" to title case.", "expected": "The Great Gatsby", "grader": "exact", "grader_args": {}}
+{"id": "strings-018", "category": "strings", "prompt": "How many times does the letter \"a\" appear in \"banana\"?", "expected": "3", "grader": "numeric", "grader_args": {}}
+{"id": "strings-019", "category": "strings", "prompt": "Is the word \"racecar\" a palindrome? Answer yes or no.", "expected": "yes", "grader": "normalized", "grader_args": {}}
+{"id": "strings-020", "category": "strings", "prompt": "What is the first character of the word \"Zephyr\"?", "expected": "Z", "grader": "exact", "grader_args": {}}

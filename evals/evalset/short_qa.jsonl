@@ -1,0 +1,15 @@
+{"id": "short_qa-001", "category": "short_qa", "prompt": "What is the capital of Germany?", "expected": "Berlin", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-002", "category": "short_qa", "prompt": "What is the capital of Canada?", "expected": "Ottawa", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-003", "category": "short_qa", "prompt": "What is the chemical symbol for sodium?", "expected": "Na", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-004", "category": "short_qa", "prompt": "What is the chemical symbol for iron?", "expected": "Fe", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-005", "category": "short_qa", "prompt": "Who wrote \"Pride and Prejudice\"?", "expected": "Jane Austen", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-006", "category": "short_qa", "prompt": "Who wrote \"1984\"?", "expected": "George Orwell", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-007", "category": "short_qa", "prompt": "What is the capital of Italy?", "expected": "Rome", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-008", "category": "short_qa", "prompt": "What is the chemical symbol for potassium?", "expected": "K", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-009", "category": "short_qa", "prompt": "What is the capital of Egypt?", "expected": "Cairo", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-010", "category": "short_qa", "prompt": "Who wrote \"The Odyssey\"?", "expected": "Homer", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-011", "category": "short_qa", "prompt": "What is the chemical symbol for silver?", "expected": "Ag", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-012", "category": "short_qa", "prompt": "What is the capital of Brazil?", "expected": "Brasilia", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-013", "category": "short_qa", "prompt": "Who wrote \"Hamlet\"?", "expected": "William Shakespeare", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-014", "category": "short_qa", "prompt": "What is the chemical symbol for copper?", "expected": "Cu", "grader": "normalized", "grader_args": {}}
+{"id": "short_qa-015", "category": "short_qa", "prompt": "What is the capital of Australia?", "expected": "Canberra", "grader": "normalized", "grader_args": {}}

@@ -1,0 +1,35 @@
+{"id": "arithmetic-001", "category": "arithmetic", "prompt": "What is 847 * 36?", "expected": "30492", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-002", "category": "arithmetic", "prompt": "Add 12345 and 6789.", "expected": "19134", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-003", "category": "arithmetic", "prompt": "Subtract 4321 from 9876.", "expected": "5555", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-004", "category": "arithmetic", "prompt": "What is 144 divided by 12?", "expected": "12", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-005", "category": "arithmetic", "prompt": "What is 2 raised to the power of 10?", "expected": "1024", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-006", "category": "arithmetic", "prompt": "Compute 17 * 23.", "expected": "391", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-007", "category": "arithmetic", "prompt": "What is 1000 minus 437?", "expected": "563", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-008", "category": "arithmetic", "prompt": "What is 56 squared?", "expected": "3136", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-009", "category": "arithmetic", "prompt": "What is 729 divided by 9?", "expected": "81", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-010", "category": "arithmetic", "prompt": "What is 15 cubed (15 * 15 * 15)?", "expected": "3375", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-011", "category": "arithmetic", "prompt": "What is 100000 divided by 25?", "expected": "4000", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-012", "category": "arithmetic", "prompt": "A jacket costs $240. What is 15% of $240?", "expected": "36", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-013", "category": "arithmetic", "prompt": "What is 8% of 1500?", "expected": "120", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-014", "category": "arithmetic", "prompt": "You answered 45 out of 60 questions correctly. What percentage did you get correct?", "expected": "75", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-015", "category": "arithmetic", "prompt": "A shirt priced at $250 is marked up by 20%. What is the new price?", "expected": "300", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-016", "category": "arithmetic", "prompt": "What is 75% of 3800?", "expected": "2850", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-017", "category": "arithmetic", "prompt": "A value rises from 90 to 120. What is the percentage increase, rounded to 2 decimal places?", "expected": "33.33", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-018", "category": "arithmetic", "prompt": "An item costs $80 and is discounted by 25%. What is the sale price?", "expected": "60", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-019", "category": "arithmetic", "prompt": "A $500 bill has a 6% tax added. What is the total, rounded to 2 decimal places?", "expected": "530", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-020", "category": "arithmetic", "prompt": "What is 50% of 64?", "expected": "32", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-021", "category": "arithmetic", "prompt": "Multiply 37 by 19.", "expected": "703", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-022", "category": "arithmetic", "prompt": "What is 5040 divided by 7?", "expected": "720", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-023", "category": "arithmetic", "prompt": "What is 999 plus 1?", "expected": "1000", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-024", "category": "arithmetic", "prompt": "If you have 2500 dollars and spend 1875 dollars, how much do you have left?", "expected": "625", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-025", "category": "arithmetic", "prompt": "What is 13 squared?", "expected": "169", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-026", "category": "arithmetic", "prompt": "Add 45.5 and 22.75.", "expected": "68.25", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-027", "category": "arithmetic", "prompt": "What is 100 divided by 3, rounded to 4 decimal places?", "expected": "33.3333", "grader": "numeric", "grader_args": {"tolerance": 0.0001}}
+{"id": "arithmetic-028", "category": "arithmetic", "prompt": "Compute 88 * 11.", "expected": "968", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-029", "category": "arithmetic", "prompt": "What is 7 * 8 * 9?", "expected": "504", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-030", "category": "arithmetic", "prompt": "A recipe requires 1234 grams of flour per batch. How many grams are needed for 4 batches?", "expected": "4936", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-031", "category": "arithmetic", "prompt": "What is 18% of 150?", "expected": "27", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-032", "category": "arithmetic", "prompt": "What is 3 to the power of 5?", "expected": "243", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-033", "category": "arithmetic", "prompt": "Two out of every 5 apples in a basket are red. What percentage of the apples are red?", "expected": "40", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
+{"id": "arithmetic-034", "category": "arithmetic", "prompt": "What is 4444 minus 2222?", "expected": "2222", "grader": "numeric", "grader_args": {}}
+{"id": "arithmetic-035", "category": "arithmetic", "prompt": "A single ticket costs $19.99. What is the total cost of 3 tickets, rounded to 2 decimal places?", "expected": "59.97", "grader": "numeric", "grader_args": {"tolerance": 0.01}}
