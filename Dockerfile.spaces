@@ -1,0 +1,72 @@
+# syntax=docker/dockerfile:1
+#
+# ============================================================================
+# HUGGING FACE SPACE VARIANT — not the default build target.
+#
+# The harness/scoring image is `Dockerfile` at the repo root (ENTRYPOINT =
+# adapter.py, harness-facing /input -> /output contract) and stays the
+# default for `docker build .` / the scoring pipeline. This file only
+# exists so the orchestrator can assemble a separate Hugging Face Docker
+# Space repo that runs the judge-facing demo dashboard
+# (`routing_agent.webapp`) on the port Spaces expects (7860).
+#
+# This file is NOT deployed by this repo directly — see
+# `spaces/README.md` ("How the orchestrator assembles this Space repo")
+# and the main repo's `DEPLOYMENT.md` for the exact assembly + gated
+# deploy steps. When copied into the Space repo it must be renamed to
+# `Dockerfile` (HF Docker Spaces require that exact filename at the repo
+# root).
+# ============================================================================
+#
+# Build steps below mirror the main Dockerfile (same base image, same uv
+# install method, same layer-caching order, same non-root user) so the
+# Space image has the same size/security posture as the harness image —
+# the only differences are the final PORT/EXPOSE/CMD, which run the demo
+# webapp instead of the adapter.
+
+FROM python:3.12-slim AS base
+
+# Copy the uv/uvx binaries from the official distroless uv image instead of
+# installing via pip or curl|sh — smaller, pinned, and avoids a build-time
+# network fetch script.
+COPY --from=ghcr.io/astral-sh/uv:0.11.18 /uv /uvx /usr/local/bin/
+
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
+    PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /app
+
+# Install dependencies first (layer caching): only the `main` (default)
+# dependency group, never `dev` — no pytest/ruff/respx in the shipped image.
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project --no-dev
+
+# Now copy source and install the project itself. README.md is required by
+# hatchling (pyproject `readme` field) to build the project wheel.
+COPY README.md ./
+COPY src/ ./src/
+COPY evals/ ./evals/
+RUN uv sync --frozen --no-dev
+
+# Non-root user — same posture as the harness image. Spaces containers do
+# not use the /input,/output volumes (those are the scoring harness's
+# contract), but keep the directories for parity / in case a judge runs
+# this image with `docker run -p ... <img> python -m routing_agent.adapter`
+# to sanity-check the harness path too.
+RUN groupadd --system app && useradd --system --gid app --home /app app \
+    && mkdir -p /input /output \
+    && chown -R app:app /app /input /output
+
+USER app
+
+# Hugging Face Docker Spaces always route traffic to port 7860 inside the
+# container (see spaces/README.md front-matter `app_port: 7860`).
+ENV PORT=7860
+EXPOSE 7860
+
+# Space-facing default: run the demo dashboard, not the harness adapter.
+CMD ["python", "-m", "routing_agent.webapp"]

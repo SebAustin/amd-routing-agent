@@ -15,6 +15,17 @@ Demo-mode contract: if `FIREWORKS_API_KEY` is unset at startup, the app
 still boots. Tier-0 tasks (arithmetic, dates, strings, units, extraction)
 keep working with zero tokens; any task that would need a model call
 returns a 503 with a clear "demo mode" message instead of crashing.
+
+Public-demo hardening (SECURITY.md M-2): a public Space URL is
+unauthenticated by design, so two in-memory guards protect the shared
+Fireworks key from being scripted into a large bill —
+  1. a per-IP sliding-window rate limit on POST /solve (429 on burst), and
+  2. a global daily spend cap tracked from the same TokenLedger used for
+     the stats dashboard (503 for model-path requests once exceeded;
+     Tier-0 keeps working since it costs nothing).
+Both are single-process, in-memory state — correct for the one-process
+demo deployment this app ships as; not a substitute for a real auth/quota
+layer if this ever needs to scale beyond a single demo instance.
 """
 
 from __future__ import annotations
@@ -22,10 +33,11 @@ from __future__ import annotations
 import logging
 import os
 import time
-from collections import Counter
+from collections import Counter, deque
+from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 
@@ -37,6 +49,15 @@ from routing_agent.registry import KNOWN_MODELS, ModelInfo, resolve_allowed, str
 from routing_agent.router import route
 
 logger = logging.getLogger(__name__)
+
+# Rate limit: requests per IP per rolling 60s window. Env-tunable so the
+# operator can raise/lower it per deployment without a code change.
+_DEFAULT_RATE_LIMIT_PER_MIN = 10
+_RATE_LIMIT_WINDOW_SECONDS = 60.0
+
+# Daily spend cap in USD, price-weighted (TokenLedger.total_price_weighted).
+# Tier-0 answers are always free and never count against this cap.
+_DEFAULT_DEMO_DAILY_BUDGET_USD = 1.00
 
 # Heuristic baseline: what the strongest allowed model would have cost on
 # this exact prompt with a "default" (unoptimized) 512-token cap, i.e. the
@@ -51,6 +72,88 @@ class SolveRequest(BaseModel):
     """Request body for POST /solve."""
 
     prompt: str = Field(min_length=1, max_length=8000)
+
+
+def _client_ip(request: Request) -> str:
+    """Best-effort client identity for rate limiting.
+
+    Spaces (and most PaaS front doors) terminate TLS at a proxy and forward
+    the real client address in `X-Forwarded-For`; honor the *first* address
+    in that list (the original client) since later entries are proxies in
+    the chain. Falls back to the direct peer address when the header is
+    absent (local/dev runs, direct `docker run`).
+    """
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        first = forwarded.split(",")[0].strip()
+        if first:
+            return first
+    return request.client.host if request.client else "unknown"
+
+
+class SlidingWindowRateLimiter:
+    """Per-key sliding-window request counter, stdlib only.
+
+    Correct (not approximate) sliding window: keeps each key's recent
+    request timestamps in a deque and evicts anything older than the
+    window on every check, so a burst can't straddle two fixed buckets to
+    double the effective limit. In-memory only — fine for a single-process
+    demo; would need a shared store (Redis, etc.) behind a load balancer.
+    """
+
+    def __init__(self, limit: int, window_seconds: float) -> None:
+        self.limit = limit
+        self.window_seconds = window_seconds
+        self._hits: dict[str, deque[float]] = {}
+
+    def allow(self, key: str, now: float | None = None) -> bool:
+        """Record one request attempt for `key`; return False if it would
+        exceed `limit` requests within the trailing `window_seconds`.
+        """
+        now = now if now is not None else time.monotonic()
+        bucket = self._hits.setdefault(key, deque())
+        cutoff = now - self.window_seconds
+        while bucket and bucket[0] <= cutoff:
+            bucket.popleft()
+        if len(bucket) >= self.limit:
+            return False
+        bucket.append(now)
+        return True
+
+
+class DailyBudgetTracker:
+    """Tracks cumulative price-weighted spend for the current UTC day.
+
+    Resets automatically on UTC day rollover (checked lazily on each
+    `spent_today` / `record` call — no background timer needed). Backed by
+    the same TokenLedger the stats endpoint already reads, so this adds no
+    duplicate bookkeeping: it just remembers where in the ledger "today"
+    started.
+    """
+
+    def __init__(self, budget_usd: float) -> None:
+        self.budget_usd = budget_usd
+        self._day: str = self._today()
+        self._records_at_day_start = 0
+
+    @staticmethod
+    def _today() -> str:
+        return datetime.now(UTC).strftime("%Y-%m-%d")
+
+    def _roll_if_new_day(self, ledger: TokenLedger) -> None:
+        today = self._today()
+        if today != self._day:
+            self._day = today
+            self._records_at_day_start = len(ledger.records)
+
+    def spent_today_usd(self, ledger: TokenLedger, price_models: dict[str, ModelInfo]) -> float:
+        self._roll_if_new_day(ledger)
+        todays_records = ledger.records[self._records_at_day_start :]
+        todays_ledger = TokenLedger(records=list(todays_records))
+        return todays_ledger.total_price_weighted(price_models)
+
+    def is_exceeded(self, ledger: TokenLedger, price_models: dict[str, ModelInfo]) -> bool:
+        return self.spent_today_usd(ledger, price_models) >= self.budget_usd
 
 
 def _estimate_prompt_tokens(text: str, overhead: int) -> int:
@@ -95,6 +198,18 @@ class AppState:
         self.baseline_total_tokens = 0
         self.solved_count = 0
 
+        rate_limit_per_min = int(
+            os.environ.get("RATE_LIMIT_PER_MIN", str(_DEFAULT_RATE_LIMIT_PER_MIN))
+        )
+        self.rate_limiter = SlidingWindowRateLimiter(
+            limit=rate_limit_per_min, window_seconds=_RATE_LIMIT_WINDOW_SECONDS
+        )
+
+        daily_budget_usd = float(
+            os.environ.get("DEMO_DAILY_BUDGET_USD", str(_DEFAULT_DEMO_DAILY_BUDGET_USD))
+        )
+        self.budget_tracker = DailyBudgetTracker(budget_usd=daily_budget_usd)
+
         try:
             self.settings = Settings.from_env()
         except ValueError:
@@ -131,10 +246,26 @@ def healthz() -> dict[str, str]:
 
 
 @app.post("/solve")
-def solve(request: SolveRequest) -> JSONResponse:
+def solve(request: SolveRequest, http_request: Request) -> JSONResponse:
     """Run one prompt through the Tier 0/1/2 cascade and report the route,
     tokens, cost, and savings vs the naive baseline estimate.
+
+    Two demo-safety gates run before any model call (SECURITY.md M-2):
+      1. per-IP sliding-window rate limit -> 429 on burst.
+      2. global daily spend cap -> 503 once exceeded, but only for prompts
+         that would actually need a paid model call; Tier-0 stays free and
+         keeps working regardless of budget state.
     """
+    client_ip = _client_ip(http_request)
+    if not state.rate_limiter.allow(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail=(
+                f"rate limit exceeded: max {state.rate_limiter.limit} requests "
+                "per minute per client. Please slow down and try again shortly."
+            ),
+        )
+
     prompt_text = request.prompt.strip()
     if not prompt_text:
         raise HTTPException(status_code=422, detail="prompt must not be empty")
@@ -147,6 +278,14 @@ def solve(request: SolveRequest) -> JSONResponse:
                 "Set FIREWORKS_API_KEY to enable Tier-1/Tier-2 routing."
             ),
         )
+
+    if not state.demo_mode and state.needs_model(prompt_text):
+        price_models = _price_models(state.allowed_models)
+        if state.budget_tracker.is_exceeded(state.ledger, price_models):
+            raise HTTPException(
+                status_code=503,
+                detail="demo budget reached for today — please try again tomorrow.",
+            )
 
     task = Task(id=f"demo-{int(time.time() * 1000)}", prompt=prompt_text)
     calls_before = len(state.ledger.records)
