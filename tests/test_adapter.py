@@ -112,3 +112,27 @@ def test_main_fails_gracefully_without_api_key(tmp_path, monkeypatch):
     exit_code = main(["--input", str(input_path)])
 
     assert exit_code == 1
+
+
+def test_read_tasks_rejects_oversized_input(tmp_path, monkeypatch):
+    import routing_agent.adapter as adapter_module
+
+    monkeypatch.setattr(adapter_module, "MAX_INPUT_BYTES", 64)
+    input_path = tmp_path / "tasks.json"
+    input_path.write_text(json.dumps([{"id": "1", "prompt": "x" * 200}]), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="exceeds 64 bytes"):
+        _read_tasks(str(input_path), stdin=None)
+
+
+def test_read_tasks_rejects_excessive_task_count(tmp_path, monkeypatch):
+    import routing_agent.adapter as adapter_module
+
+    monkeypatch.setattr(adapter_module, "MAX_TASKS", 3)
+    input_path = tmp_path / "tasks.json"
+    input_path.write_text(
+        json.dumps([{"id": str(i), "prompt": "2+2"} for i in range(4)]), encoding="utf-8"
+    )
+
+    with pytest.raises(ValueError, match="exceeds limit of 3"):
+        _read_tasks(str(input_path), stdin=None)

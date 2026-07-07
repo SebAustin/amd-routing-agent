@@ -31,6 +31,11 @@ logger = logging.getLogger(__name__)
 DEFAULT_INPUT_PATH = "/input/tasks.json"
 DEFAULT_OUTPUT_PATH = "/output/results.json"
 
+# Guards against hostile/corrupt task files (SECURITY.md M-1): a runaway input
+# would otherwise mean unbounded memory and unbounded token spend downstream.
+MAX_INPUT_BYTES = 50 * 1024 * 1024
+MAX_TASKS = 10_000
+
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -72,10 +77,14 @@ def _read_tasks(input_path: str | None, stdin: TextIO) -> list[dict[str, Any]]:
 
     if not raw_text.strip():
         raise ValueError("no task input provided (empty file/stdin)")
+    if len(raw_text.encode("utf-8")) > MAX_INPUT_BYTES:
+        raise ValueError(f"task input exceeds {MAX_INPUT_BYTES} bytes")
 
     parsed = json.loads(raw_text)
     if not isinstance(parsed, list):
         raise ValueError("tasks.json must contain a top-level JSON array")
+    if len(parsed) > MAX_TASKS:
+        raise ValueError(f"task count {len(parsed)} exceeds limit of {MAX_TASKS}")
     return parsed
 
 
