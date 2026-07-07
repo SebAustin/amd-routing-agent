@@ -1,0 +1,48 @@
+# Secrets — never bake these into an image layer.
+.env
+*.env
+!.env.example
+
+# VCS
+.git/
+.gitignore
+
+# Python / uv caches and virtualenvs
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Tests — not needed in the shipped runtime image.
+tests/
+
+# Docs / planning artifacts — not needed at runtime.
+README.md
+PLAN.md
+ASSUMPTIONS.md
+
+# Local run artifacts (harness input/output mounts on the host).
+input/
+output/
+results/
+
+# Editor / OS cruft
+.DS_Store
+.vscode/
+.idea/
+
+# CI / misc
+.github/
+docker-compose.yml
+Dockerfile
+
+# Eval task data is optional-in: keep graders/policies (needed at runtime by
+# run_eval.py-adjacent code paths) but exclude the bulk evalset JSONL corpus
+# to shrink the build context. Uncomment if the harness never needs raw eval
+# data inside the image.
+# evals/evalset/

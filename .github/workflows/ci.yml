@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+# No secrets are used anywhere in this workflow — every test runs fully
+# offline (HTTP calls to Fireworks are mocked with respx; adapter/webapp
+# tests use fake FIREWORKS_API_KEY values that never touch the network).
+
+jobs:
+  lint-and-test:
+    name: Lint, format check, and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "0.11.18"
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --frozen --all-groups
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Run tests
+        run: uv run pytest -q
+
+  docker-build:
+    name: Build Docker image (no push)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: routing-agent:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

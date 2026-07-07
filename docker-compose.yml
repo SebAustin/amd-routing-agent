@@ -1,0 +1,27 @@
+# Two ways to run the same image:
+#   docker compose run --rm harness   -> harness contract: /input -> /output
+#   docker compose up demo            -> judge-facing dashboard on :8000
+#
+# Both services read credentials from ./.env (gitignored; copy .env.example
+# and fill in real values — never commit the real file).
+
+services:
+  harness:
+    build: .
+    image: routing-agent:latest
+    env_file: .env
+    volumes:
+      - ./input:/input:ro
+      - ./output:/output
+    # Default ENTRYPOINT (adapter.py) already reads /input/tasks.json and
+    # writes /output/results.json; no command override needed.
+
+  demo:
+    build: .
+    image: routing-agent:latest
+    env_file: .env
+    environment:
+      PORT: "8000"
+    ports:
+      - "8000:8000"
+    command: ["python", "-m", "routing_agent.webapp"]
