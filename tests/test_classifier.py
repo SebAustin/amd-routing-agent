@@ -45,3 +45,71 @@ def test_classify_falls_back_to_general_on_ambiguous_prompt():
 
 def test_classify_is_whitespace_tolerant():
     assert classify("   2 + 2   ") == TaskType.ARITHMETIC
+
+
+# Regression cases found while tuning against evals/evalset (200-task audit):
+# each of these was misclassified before the corresponding regex fix.
+_REGRESSION_TABLE: list[tuple[str, TaskType]] = [
+    # Inline "A) ... B) ..." options (no line anchor) previously fell to SHORT_QA.
+    (
+        "What is the capital of France? A) Berlin B) Madrid C) Paris D) Rome",
+        TaskType.MULTIPLE_CHOICE,
+    ),
+    (
+        "In which year did World War II end? A) 1943 B) 1944 C) 1945 D) 1946",
+        TaskType.MULTIPLE_CHOICE,
+    ),
+    # "What does this Python code print?" fell to SHORT_QA/ARITHMETIC.
+    ("What does this Python code print?\n\nprint(3 + 4 * 2)", TaskType.CODE),
+    (
+        "What does this Python code print?\n\nd = {'a': 1, 'b': 2}\nd['c'] = 3\nprint(len(d))",
+        TaskType.CODE,
+    ),
+    # Word-problem arithmetic phrasing fell to GENERAL (the trailing \b after
+    # a digit-ending alternative like "add \d" never matched).
+    ("Add 12345 and 6789.", TaskType.ARITHMETIC),
+    ("Subtract 4321 from 9876.", TaskType.ARITHMETIC),
+    ("Compute 17 * 23.", TaskType.ARITHMETIC),
+    ("Multiply 37 by 19.", TaskType.ARITHMETIC),
+    ("What is 56 squared?", TaskType.ARITHMETIC),
+    ("A shirt priced at $250 is marked up by 20%. What is the new price?", TaskType.ARITHMETIC),
+    (
+        "A $500 bill has a 6% tax added. What is the total, rounded to 2 decimal places?",
+        TaskType.ARITHMETIC,
+    ),
+    # "times" inside "How many times does X appear" is not multiplication.
+    ('How many times does the letter "s" appear in "mississippi"?', TaskType.STRING_OP),
+    # "tax" as a substring of "tax incentives" inside prose is not arithmetic.
+    (
+        'Summarize the following text in one sentence. Text: "Electric vehicles are '
+        "becoming more common. Many governments now offer tax incentives to encourage "
+        'adoption."',
+        TaskType.SUMMARIZATION,
+    ),
+    # Language identification is a classification task, not GENERAL.
+    (
+        "Identify the language of this sentence as one of: English, Spanish, French, "
+        'German. Sentence: "Bonjour, comment allez-vous?"',
+        TaskType.CLASSIFICATION,
+    ),
+    # Character-position / palindrome / title-case string ops fell to
+    # SHORT_QA/GENERAL/ARITHMETIC.
+    ('What is the 3rd character of the word "benchmark"?', TaskType.STRING_OP),
+    ('Convert "the great gatsby" to title case.', TaskType.STRING_OP),
+    ('Is the word "racecar" a palindrome? Answer yes or no.', TaskType.STRING_OP),
+    # "How many MB are in 1 GB" phrasing (no leading "convert") fell to GENERAL.
+    ("Using 1 GB = 1024 MB, how many MB are in 1 GB?", TaskType.UNIT_CONVERSION),
+    # "days between/from" and leap-year phrasing fell to SHORT_QA/GENERAL.
+    (
+        "How many days are there between January 1, 2025 and March 1, 2025?",
+        TaskType.DATE_MATH,
+    ),
+    ("How many days are there from June 15, 2025 to September 1, 2025?", TaskType.DATE_MATH),
+    ("Is the year 2028 a leap year? Answer yes or no.", TaskType.DATE_MATH),
+    ("How many days are in February 2028?", TaskType.DATE_MATH),
+]
+
+
+@pytest.mark.parametrize("prompt,expected_type", _REGRESSION_TABLE)
+def test_classify_regression_table(prompt: str, expected_type: TaskType):
+    assert classify(prompt) == expected_type
