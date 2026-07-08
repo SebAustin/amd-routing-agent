@@ -119,8 +119,8 @@ task
 ## Slide 8 — Team, Repo, Links
 
 **Content:**
-- Repo: `github.com/SebAustin/amd-routing-agent` (per `DEPLOYMENT.md`) — `[unverified: confirm repo is public before sharing this link]`
-- Demo: Hugging Face Space `SebAustin/amd-routing-agent-demo` — `[unverified: DEPLOYMENT.md marks this "Pending" as of the last read; confirm live before the deck goes out]`
+- Repo: `github.com/SebAustin/amd-routing-agent` — public, CI green (verified)
+- Demo: Hugging Face Space `SebAustin/amd-routing-agent-demo` — LIVE at https://sebaustin-amd-routing-agent-demo.hf.space (verified 2026-07-07)
 - Docs: `README.md`, `PLAN.md`, `SECURITY.md`, `DEPLOYMENT.md` in the repo.
 - Built for AMD Developer Cloud Hackathon, ACT II — Track 1.
 

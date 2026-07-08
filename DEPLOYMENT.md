@@ -13,7 +13,7 @@ audit) and `PLAN.md` (architecture). This file covers *where things run*,
 |---|---|---|
 | Source of truth | GitHub — `github.com/SebAustin/amd-routing-agent`, branch `main` | Live, CI green |
 | Scoring harness image | Built from repo-root `Dockerfile`, run by the AMD/Fireworks scoring pipeline | Built on demand by the harness operator, not hosted by this repo |
-| Public demo | Hugging Face Space `SebAustin/amd-routing-agent-demo`, `sdk: docker` | **Pending** — packaging is in this repo (`spaces/`, `Dockerfile.spaces`); the Space repo itself and its secrets are assembled/deployed by the orchestrator (see §5). Not created by this change. |
+| Public demo | Hugging Face Space `SebAustin/amd-routing-agent-demo`, `sdk: docker` | **LIVE** — https://sebaustin-amd-routing-agent-demo.hf.space (deployed 2026-07-07 via `scripts/deploy_space.sh`; verified: /healthz ok, Tier-0 solve 0 tokens, model-path solve via gpt-oss-20b). Key stored as a private Space secret; rate limit 10 req/min, $1/day budget cap. |
 
 Two separate Docker images are built from this one repo, from two separate
 Dockerfiles, for two separate audiences:

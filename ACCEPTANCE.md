@@ -31,7 +31,7 @@ Tiered routing cascade (Tier-0 deterministic solvers → cheapest adequate Firew
 1. `Policy.retry_budget` not consulted by client (always retry-once; ledger counts it; live retry rate 2.1%).
 2. Logprob secondary confidence signal unwired (format-validation primary achieves 99.5%).
 3. In-container harness runtime execution (Docker daemon unavailable locally; image build CI-verified).
-4. HF Space demo deploy — fully prepared, **gated on a write-scoped HF token**: `HF_TOKEN=hf_xxx ./scripts/deploy_space.sh` (user approved live-key-with-caps mode).
+4. ~~HF Space demo deploy~~ — **DONE 2026-07-07**: live at https://sebaustin-amd-routing-agent-demo.hf.space (user-provided write token; live-key-with-caps mode verified: Tier-0 at 0 tokens, model path via gpt-oss-20b).
 
 ## Next (when the real harness spec lands — Day-4 reserved)
 
