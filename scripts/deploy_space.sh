@@ -45,6 +45,7 @@ fi
 : "${HF_TOKEN:?Set HF_TOKEN to a WRITE-scoped Hugging Face token}"
 FIREWORKS_API_KEY="$(grep '^FIREWORKS_API_KEY=' "$REPO_ROOT/.env" | cut -d= -f2-)"
 [ -n "$FIREWORKS_API_KEY" ] || { echo "FIREWORKS_API_KEY missing from .env" >&2; exit 1; }
+export FIREWORKS_API_KEY HF_TOKEN
 
 python3 - "$SPACE_ID" "$STAGE" <<'PY'
 import os, sys
