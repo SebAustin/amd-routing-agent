@@ -231,7 +231,9 @@ def concat_step() -> None:
 
     timeline = []
     for i, entry in enumerate(plan):
-        timeline.append({"shot": entry["shot"], "start_s": round(starts[i], 3), "end_s": round(ends[i], 3)})
+        timeline.append(
+            {"shot": entry["shot"], "start_s": round(starts[i], 3), "end_s": round(ends[i], 3)}
+        )
     # Clamp the last shot's end to the real probed duration so the SRT
     # never claims a caption extends past the actual video.
     timeline[-1]["end_s"] = round(min(timeline[-1]["end_s"], probed_dur), 3)

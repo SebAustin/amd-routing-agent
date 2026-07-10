@@ -28,7 +28,6 @@ import argparse
 import json
 import re
 import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -84,7 +83,7 @@ def extract_voiceover(block: str) -> str:
         elif quote_lines:
             # First non-'>' line after the blockquote ended.
             break
-    text = " ".join(l for l in quote_lines if l)
+    text = " ".join(line for line in quote_lines if line)
     text = text.strip()
     if text.startswith('"'):
         text = text[1:]
@@ -148,10 +147,9 @@ def ffprobe_duration(path: Path) -> float:
 def synthesize(shot: int, text: str, force: bool = False) -> Path:
     out = mp3_path(shot)
     txt_path = narration_txt_path(shot)
-    if out.exists() and not force:
-        if out.stat().st_mtime >= txt_path.stat().st_mtime:
-            print(f"shot {shot}: mp3 up to date, skipping synthesis")
-            return out
+    if out.exists() and not force and out.stat().st_mtime >= txt_path.stat().st_mtime:
+        print(f"shot {shot}: mp3 up to date, skipping synthesis")
+        return out
     print(f"shot {shot}: synthesizing narration ({len(text)} chars)")
     subprocess.run(
         [
@@ -300,8 +298,12 @@ def emit_srt(timeline_path: Path, out_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--shot", type=int, action="append", help="Regenerate only this shot's mp3 (repeatable)")
-    parser.add_argument("--force", action="store_true", help="Force re-synthesis even if mp3 is up to date")
+    parser.add_argument(
+        "--shot", type=int, action="append", help="Regenerate only this shot's mp3 (repeatable)"
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="Force re-synthesis even if mp3 is up to date"
+    )
     parser.add_argument("--emit-srt", nargs=2, metavar=("TIMELINE_JSON", "OUT_SRT"))
     args = parser.parse_args()
 
