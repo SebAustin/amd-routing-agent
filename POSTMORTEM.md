@@ -152,3 +152,87 @@ the plan loop, so missing it is a documented shortfall, not a broken commitment.
 All five are **additive** and **tightening-only** (they add checks; none relaxes a guardrail or
 lowers a bar). Each is written up with a target file, exact change, and evidence in
 `SKILL-UPDATES.md`, and **none is applied without explicit user approval on a feature branch**.
+
+---
+
+## Addendum — post-acceptance phases (2026-07-08 → 07-10)
+
+**Addendum date:** 2026-07-10 · same blameless, evidence-based posture. The original sections
+above are unchanged. After acceptance, three more phases ran; the user has since **explicitly
+approved** applying the needed team-skill updates (proposals 1, 2, 3a, 4, 5), and this addendum
+records two further generalizable lessons (proposals 6–7) surfaced by these phases. Evidence:
+git log since `d1e7308` (commits `852a8a6`, `14c3d79`, `b6971e3`, `cb0a9b5`, `8d4be94`,
+`4b538c1`, `11eaade`), `launch/`, `scripts/video/`, `scripts/assets/`, `.github/workflows/ci.yml`,
+and the `ACCEPTANCE.md` Deferred-list updates.
+
+### Timeline
+
+1. **HF Space deploy completed (2026-07-08).** After the user supplied a **write-scoped** token,
+   the previously-gated deploy ran and went live (ACCEPTANCE.md Deferred #4, now DONE:
+   `https://sebaustin-amd-routing-agent-demo.hf.space`; Tier-0 at 0 tokens, model path via
+   `gpt-oss-20b` verified). This **confirms RC4 was a credential-*scope* issue, not a presence
+   issue** — the exact failure mode proposal 4 preflights.
+2. **Demo video production (2026-07-08).** A fully scripted pipeline: `edge-tts` narration,
+   Playwright recording of the **live** Space, `ffmpeg` assembly — 168s / 1080p, verified
+   frame-by-frame (`scripts/video/`, `launch/video`).
+3. **Submission assets (2026-07-10).** A ≤2000-char description (1884 chars), a 16:9 cover, and
+   an 8-slide PDF deck (`scripts/assets/`, `launch/cover.png`, `launch/deck.pdf`,
+   `launch/SUBMISSION.md`). The orchestrator then **reconciled all assets to `tuned-live.json`
+   as the single canonical source** (commit `8d4be94`).
+4. **GHCR publish (2026-07-10).** A CI `docker-publish` job pushes the harness image to
+   `ghcr.io/sebaustin/amd-routing-agent` using only the built-in `GITHUB_TOKEN`
+   (`packages: write`), verified by anonymous pull (`.github/workflows/ci.yml`, commit
+   `4b538c1`).
+
+### What worked
+
+- **The clean-room CI runner closed the local-environment gaps.** The local Docker daemon was
+  still unavailable headlessly (the same limitation as RC6), so the image publish ran in CI with
+  the built-in token and an anonymous-pull verification. This is the **practical answer to RC6**:
+  when the local environment can't execute a step, a CI runner with a scoped built-in credential
+  can — without introducing a user secret.
+- **Canonical-source reconciliation held.** The video agent correctly pulled numbers from the
+  committed `tuned-live.json`, and the orchestrator swept every downstream asset to that one
+  source before submission. Honesty and single-source discipline carried through the last mile.
+- **Credential-scope theory confirmed in practice.** RC4's fix (write-scoped token) unblocked the
+  deploy on the first try once the correctly-scoped credential existed — validating proposal 4.
+
+### What didn't (friction)
+
+- **Local `ffmpeg` had no libass/drawtext — discovered mid-build.** The caption step was designed
+  assuming subtitle burn-in, but the local `ffmpeg` build shipped without the subtitle/drawtext
+  filters. Worked around by rendering captions as Chromium PNGs and compositing with an `overlay`
+  filter. A `ffmpeg -filters | grep subtitles`-style capability probe **before** designing the
+  caption step would have caught this at plan time.
+- **Metric jitter had propagated into older launch copy.** The video agent's use of the canonical
+  `tuned-live.json` exposed drift: `$0.003742 / 2.1%` (canonical) vs a stale `$0.003636 / 1.45%`
+  that had already reached some published copy — run-to-run jitter of the same metric coexisting
+  across materials. Caught and reconciled, but only because one agent happened to use the
+  canonical file.
+- **First CI push failed the repo-wide `ruff format --check`.** The new video-pipeline scripts
+  hadn't been run through the repo's format gate before pushing (fixed in follow-up `cb0a9b5`).
+  New scripts must clear the repo gate **before** push, not after.
+
+### Root causes (blameless)
+
+| # | Symptom | Root cause | Scope |
+|---|---------|-----------|-------|
+| RC8 | `ffmpeg` caption step designed against a filter set the local build didn't have; found mid-build | Live-dependency probing (proposal 1) covers APIs/models but was never extended to **local tool/codec capabilities** for media/build pipelines — the same "unprobed dependency" failure mode, different surface | **Generalizable → proposal 7** |
+| RC9 | Same metric appeared as two jittered values across published assets until reconciled | No written rule that every audience-facing artifact cites **one named canonical report** and that a regenerated report triggers a full downstream sweep; single-source discipline held by instinct, not by rule | **Generalizable → proposal 6** |
+| RC10 | New pipeline scripts failed the repo-wide format gate on first CI push | "The gate is run, not claimed" was applied to the core build but not re-run across **newly added ancillary scripts** before push; already covered by the existing standard — reinforced, no new proposal | **Project-specific (existing standard)** |
+| RC4 (closed) | HF write-scope blocked deploy | Confirmed a credential-*scope* gap; resolved once a write-scoped token was supplied — validates proposal 4 | **Resolved** |
+| RC6 (practical close) | In-container / image steps couldn't run on the local daemon | Environmental limitation; the CI runner with a built-in scoped token executes the step in a clean room — the practical answer, criterion not weakened | **Resolved via CI** |
+
+### New generalizable lessons (carried to SKILL-UPDATES.md as proposals 6–7)
+
+6. **Canonical-metrics rule** (RC9) → `launch-comms` Gotcha + `solution-rubric` criterion note:
+   every audience-facing artifact cites ONE named canonical report; regenerating that report
+   triggers a same-change sweep of all downstream assets; jitter variants never coexist.
+7. **Probe local tool capabilities too** (RC8) → extend proposal 1's live-probe text in
+   `plan-rubric` and `architect` by one sentence: live-dependency probing includes local
+   media/build tool capabilities (e.g. `ffmpeg -filters | grep subtitles` before a caption step).
+
+Both are **additive** and **tightening-only**. Per the user's same-session approval of "update
+the team skills if needed", proposals 1, 2, 3a, 4, 5, 6, and 7 were **applied on 2026-07-10** to
+the live team-skill files; each application is recorded with its target path and backup in
+`SKILL-UPDATES.md`. No guardrail was weakened and no quality bar was lowered.

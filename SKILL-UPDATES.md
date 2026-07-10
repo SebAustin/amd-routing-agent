@@ -13,9 +13,24 @@ never relax.
 
 Reply with the numbers you approve (e.g. "apply 1, 3, 5"). Unapproved items are left as-is.
 
+> **Status update 2026-07-10.** The user gave same-session approval ("do the post mortem and
+> update the team skills if needed"), which the orchestrator scoped to proposals **1, 2, 3a, 4,
+> 5** plus the two new post-acceptance lessons **6, 7**. All seven were **applied on 2026-07-10**
+> to the live team-skill files (user-level `~/.claude/...`, except `launch-comms` which exists
+> only in the plugin cache — see proposal 6). Each proposal below carries an `APPLIED` line with
+> the exact target path(s) and backup(s). Original proposal text is left intact for the audit
+> trail. Backups (`*.bak-20260710`) are not committed anywhere.
+
 ---
 
 ## 1. Plan-rubric + architect: require live-environment probing before the plan freezes
+
+> **APPLIED 2026-07-10 — user-approved.**
+> - Target A: `~/.claude/skills/plan-rubric/SKILL.md` (user-level) — Feasibility sub-bullet added
+>   under a new `## Criterion guidance` section. Backup: `~/.claude/skills/plan-rubric/SKILL.md.bak-20260710`.
+> - Target B: `~/.claude/agents/architect.md` (user-level) — "Live-environment probe" bullet added
+>   under "Cover in `PLAN.md`". Backup: `~/.claude/agents/architect.md.bak-20260710`.
+> - Note: both live files also carry proposal 7's one-sentence extension (local tool capabilities).
 
 **Motivation (evidence).** Probing the real Fireworks key on Day 1 surfaced four facts that
 would each have been mid-build surprises: Gemma is NOT serverless despite the partner prize;
@@ -51,6 +66,10 @@ Add a bullet under "Cover in `PLAN.md`":
 
 ## 2. agency-orchestration: document the parallel-builder protocol
 
+> **APPLIED 2026-07-10 — user-approved.** Target: `~/.claude/skills/agency-orchestration/SKILL.md`
+> (user-level) — "### Parallel builders" subsection added under `## Workflow`, before step 4.
+> Backup: `~/.claude/skills/agency-orchestration/SKILL.md.bak-20260710`.
+
 **Motivation (evidence).** Two build waves ran in parallel (core + evalset; then eval-tuning +
 webapp/Docker) and worked, with only one trivial cross-boundary lint leak in `evals/graders.py`
 (POSTMORTEM §2, §4). They worked *because* file boundaries and a single git owner were set up
@@ -82,6 +101,12 @@ stays sequential.
 ---
 
 ## 3. doc-writer + orchestration: shell-less roles must not own their own verification gate
+
+> **APPLIED 2026-07-10 — user-approved (option 3a, preferred).** Target: `~/.claude/agents/doc-writer.md`
+> (user-level) — `Bash` added to the `tools:` frontmatter (`Read, Write, Edit, Bash, Grep, Glob`)
+> and the "Verify before you document" bullet appended. Backup:
+> `~/.claude/agents/doc-writer.md.bak-20260710`. Option 3b not applied (3a keeps the role
+> self-sufficient).
 
 **Motivation (evidence).** `doc-writer`'s prompt says "verify commands and paths exist," but its
 tools are `Read, Write, Edit, Grep, Glob` — **no Bash** — so it cannot run the commands it
@@ -120,6 +145,12 @@ increases.
 
 ## 4. requirements-analyst + plan-rubric: preflight credential *scope* at intake
 
+> **APPLIED 2026-07-10 — user-approved.**
+> - Target A: `~/.claude/agents/requirements-analyst.md` (user-level) — "Credential-scope
+>   preflight" bullet added under "Do:". Backup: `~/.claude/agents/requirements-analyst.md.bak-20260710`.
+> - Target B: `~/.claude/skills/plan-rubric/SKILL.md` (user-level) — Completeness credential-scope
+>   sub-bullet added under `## Criterion guidance`. Backup: `~/.claude/skills/plan-rubric/SKILL.md.bak-20260710`.
+
 **Motivation (evidence).** The approved HF Space deploy was fully built, then blocked at the
 last mile because the provided HF token was **read-only** (POSTMORTEM §4, RC4;
 ACCEPTANCE.md Deferred #4). Credential *presence* is checked (ASSUMPTIONS.md #12), but the
@@ -149,6 +180,12 @@ Add to criterion 5 "Completeness" guidance (as a sub-bullet):
 
 ## 5. solution-rubric + architect: honest-baseline principle for comparative metrics
 
+> **APPLIED 2026-07-10 — user-approved.**
+> - Target A: `~/.claude/skills/solution-rubric/SKILL.md` (user-level) — honest-baseline sub-bullet
+>   added under a new `## Criterion guidance` section. Backup: `~/.claude/skills/solution-rubric/SKILL.md.bak-20260710`.
+> - Target B: `~/.claude/agents/architect.md` (user-level) — "Baselines for comparative success
+>   criteria" bullet added under "Cover in `PLAN.md`". Backup: `~/.claude/agents/architect.md.bak-20260710`.
+
 **Motivation (evidence).** SC2 is a comparative claim ("≥60% token reduction vs baseline"). The
 eval-tuning agent *chose* to make the baseline fairer (`apply_reasoning_profile=False`,
 ADR-0004), which roughly halved the reported win but kept it honest; the team then reported SC2
@@ -177,6 +214,82 @@ Add a bullet under "Cover in `PLAN.md`":
 
 **Why it can't lower a bar:** it *raises* the bar for what counts as a met comparative criterion
 and forbids flattering baselines. It cannot be used to inflate a score.
+
+---
+
+## 6. launch-comms + solution-rubric: canonical-metrics rule for audience-facing assets
+
+*New lesson from the post-acceptance phases (POSTMORTEM Addendum, RC9). Additive-only.*
+
+> **APPLIED 2026-07-10 — same-session user approval** ("update the team skills if needed").
+
+**Motivation (evidence).** During submission prep, the same metric surfaced as two jittered
+values across published materials — `$0.003742 / 2.1%` from the committed canonical
+`evals/reports/tuned-live.json` vs a stale `$0.003636 / 1.45%` that had already propagated into
+older launch copy (run-to-run jitter). The video agent's use of the canonical file is what
+**exposed** the drift; the orchestrator then reconciled every asset to `tuned-live.json` before
+submission (commit `8d4be94`). Single-source discipline held by instinct, not by a written rule.
+
+**Target A:** `~/.claude/plugins/cache/ai-agency/ai-project-agency/1.0.0/agents/launch-comms.md`
+*(launch-comms exists **only** in the plugin cache — no user-level copy. Edited the cache copy;
+a future plugin update will overwrite it, so the exact inserted text is preserved here for
+re-application.)* Backup: `.../agents/launch-comms.md.bak-20260710`. Added a Gotcha:
+```
+- **Run-to-run metric jitter drifts across artifacts.** Cite **ONE named canonical report** (e.g.
+  the committed `tuned-live.json`) for every number, and pull all assets — deck, description,
+  video captions, README, submission copy — from that same source. When the report regenerates,
+  reconcile every downstream artifact in the same change; do not let jitter variants of the same
+  metric coexist across published materials. (AMD Hackathon 2026: $0.003742 / 2.1% from the
+  canonical report vs a stale $0.003636 / 1.45% that had propagated into older launch copy —
+  the video agent's use of the canonical file is what exposed the drift.)
+```
+
+**Target B:** `~/.claude/skills/solution-rubric/SKILL.md` (user-level). Backup:
+`~/.claude/skills/solution-rubric/SKILL.md.bak-20260710`. Added under `## Criterion guidance`:
+```
+- **Canonical metrics, single source.** Every audience-facing artifact (deck, description,
+  video, README, submission copy) must cite **ONE named canonical report** for its numbers. When
+  that report regenerates, sweep and reconcile all downstream assets in the same change;
+  run-to-run jitter variants of the same metric must never coexist across published materials.
+```
+
+**Why it can't lower a bar:** it *adds* a single-source requirement for published metrics and a
+reconciliation step; it never relaxes an existing check.
+
+---
+
+## 7. plan-rubric + architect: live-dependency probing includes local tool capabilities
+
+*New lesson from the post-acceptance phases (POSTMORTEM Addendum, RC8). Extends proposal 1 by one
+sentence in each target. Additive-only.*
+
+> **APPLIED 2026-07-10 — same-session user approval** ("update the team skills if needed").
+
+**Motivation (evidence).** The demo-video caption step was designed assuming `ffmpeg` subtitle
+burn-in, but the local `ffmpeg` build had **no libass/drawtext** — discovered mid-build and worked
+around by rendering captions as Chromium PNGs and compositing with an `overlay` filter
+(`scripts/video/render_captions.mjs`). A missing codec/filter found mid-build is the same failure
+mode as an unprobed API: probing must cover **local tool capabilities** for media/build pipelines,
+not just remote services.
+
+**Target A:** `~/.claude/skills/plan-rubric/SKILL.md` (user-level) — appended one sentence to the
+Feasibility bullet under `## Criterion guidance`. Backup: `~/.claude/skills/plan-rubric/SKILL.md.bak-20260710`.
+```
+  Live-dependency probing includes **local tool capabilities** for media/build pipelines
+  (e.g. `ffmpeg -filters | grep subtitles` before designing a caption step) — a missing
+  codec/filter discovered mid-build is the same failure mode as an unprobed API.
+```
+
+**Target B:** `~/.claude/agents/architect.md` (user-level) — appended one sentence to the
+"Live-environment probe" bullet. Backup: `~/.claude/agents/architect.md.bak-20260710`.
+```
+  This includes **local tool capabilities** for media/build pipelines (e.g. `ffmpeg -filters |
+  grep subtitles` before designing a caption step) — a missing codec/filter discovered mid-build
+  is the same failure mode as an unprobed API.
+```
+
+**Why it can't lower a bar:** it *broadens* the probe requirement to another dependency class; it
+adds a check and never relaxes one.
 
 ---
 
