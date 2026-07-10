@@ -57,3 +57,43 @@ jobs:
           tags: routing-agent:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  docker-publish:
+    # Publishes the harness image required by the Track 1 submission form.
+    # Uses only the built-in GITHUB_TOKEN (packages: write) — no user secrets.
+    name: Publish image to GHCR
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint-and-test, docker-build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/sebaustin/amd-routing-agent:latest
+            ghcr.io/sebaustin/amd-routing-agent:v1.0.0
+            ghcr.io/sebaustin/amd-routing-agent:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/SebAustin/amd-routing-agent
+            org.opencontainers.image.description=Hybrid token-efficient routing agent — AMD Hackathon ACT II Track 1
+            org.opencontainers.image.licenses=MIT
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
