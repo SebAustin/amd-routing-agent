@@ -160,6 +160,55 @@ the model — is where the token budget is won or lost.
 
 ---
 
+## GitHub Repository (form field)
+
+```
+https://github.com/SebAustin/amd-routing-agent
+```
+
+## Docker Image Reference (form field — mandatory for Track 1)
+
+```
+ghcr.io/sebaustin/amd-routing-agent:v1.0.0
+```
+
+Also tagged `:latest` and per-commit SHA. **Public — no auth needed to pull**
+(verified: anonymous manifest fetch succeeds). Published automatically by the
+repo's CI on every push to `main`.
+
+## Additional Info (form field)
+
+> **Running the scored harness image.** The image's default entrypoint is the
+> Track 1 harness adapter: it reads `/input/tasks.json` and writes
+> `/output/results.json` (`[{"id", "output"}]`, one entry per task).
+>
+> ```
+> docker pull ghcr.io/sebaustin/amd-routing-agent:v1.0.0
+> docker run --rm \
+>   -v $(pwd)/input:/input:ro -v $(pwd)/output:/output \
+>   -e FIREWORKS_API_KEY=<key> \
+>   -e FIREWORKS_BASE_URL=<base url> \
+>   -e ALLOWED_MODELS=<comma-separated model ids> \
+>   ghcr.io/sebaustin/amd-routing-agent:v1.0.0
+> ```
+>
+> All Fireworks access is via the OpenAI-compatible env contract
+> (`FIREWORKS_BASE_URL`, `ALLOWED_MODELS` — comma list or JSON array, ids with
+> or without the `accounts/fireworks/models/` prefix). Unknown model ids get
+> price-tier inference by name; `gemma*` models are auto-preferred at equal
+> price tier the moment they appear in `ALLOWED_MODELS`.
+>
+> **Live demo dashboard** (same routing code, visual):
+> https://sebaustin-amd-routing-agent-demo.hf.space — rate-limited and
+> budget-capped; demo override: `docker run -p 8000:8000 <image> python -m
+> routing_agent.webapp`.
+>
+> **Evidence in-repo:** committed eval reports (`evals/reports/`), 200-task
+> graded eval set + runner (`evals/`), 175 passing tests, STRIDE security
+> audit (`SECURITY.md`), architecture + ADRs (`ARCHITECTURE.md`),
+> `ACCEPTANCE.md` with honest pass/fail per success criterion (the 60%
+> token-reduction stretch goal landed at ~47-51% — documented, not hidden).
+
 ## Technology Tags
 
 `Python` · `FastAPI` · `Fireworks AI` · `LLM Routing` · `OpenAI SDK`
