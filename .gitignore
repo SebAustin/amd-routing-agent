@@ -12,3 +12,12 @@ dist/
 output/
 results/
 *.tsbuildinfo
+
+# Video production pipeline (scripts/video/*.py, *.mjs, *.sh, slides/ are
+# committed; large media and the local Playwright workdir are not).
+launch/video/*.mp4
+*.webm
+*.mp3
+*.aiff
+scripts/video/build/
+scripts/video/node_modules/

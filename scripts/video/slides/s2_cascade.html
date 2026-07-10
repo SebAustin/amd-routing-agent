@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Shot 2 — Cascade</title>
+<style>
+  :root {
+    --color-bg: #0b0b0d;
+    --color-surface: #141416;
+    --color-surface-raised: #1c1c1f;
+    --color-border: #2a2a2e;
+    --color-text: #ececee;
+    --color-text-dim: #8b8b92;
+    --color-accent: #ED1C24;
+    --color-tier0: #2fbf71;
+    --color-tier1: #ffb020;
+    --color-tier2: #ED1C24;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: var(--color-bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(237, 28, 36, 0.10), transparent 40%),
+      radial-gradient(circle at 90% 92%, rgba(237, 28, 36, 0.06), transparent 45%);
+    color: var(--color-text);
+    font-family: var(--sans);
+  }
+  .stage {
+    width: 1920px;
+    height: 1080px;
+    padding: 72px 100px;
+    display: flex;
+    flex-direction: column;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: 26px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin: 0 0 10px;
+  }
+  h1 span { color: var(--color-text); font-weight: 700; }
+  .headline {
+    font-size: 46px;
+    font-weight: 700;
+    margin: 0 0 64px;
+    letter-spacing: -0.01em;
+  }
+  .flow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .node {
+    width: 300px;
+    min-height: 260px;
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 26px 26px;
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+    transition: opacity 550ms var(--ease-out-expo), transform 550ms var(--ease-out-expo);
+    display: flex;
+    flex-direction: column;
+  }
+  .node.in { opacity: 1; transform: translateY(0) scale(1); }
+  .node .label {
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+  .node .title-line {
+    font-size: 25px;
+    font-weight: 700;
+    margin-top: 8px;
+    line-height: 1.2;
+  }
+  .node .detail {
+    margin-top: 10px;
+    font-size: 16px;
+    color: var(--color-text-dim);
+    line-height: 1.45;
+  }
+  .node .cost {
+    margin-top: auto;
+    align-self: flex-start;
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 15px;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .node.task {
+    width: 190px;
+    min-height: 190px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--color-surface-raised);
+  }
+  .node.task .title-line { margin-top: 0; }
+  .node.classifier .cost, .node.tier0 .cost {
+    background: rgba(47, 191, 113, 0.15);
+    color: var(--color-tier0);
+  }
+  .node.tier1 { border-color: rgba(255, 176, 32, 0.4); }
+  .node.tier1 .gate-note {
+    margin-top: 14px;
+    font-size: 15px;
+    color: var(--color-text-dim);
+    border-top: 1px dashed var(--color-border);
+    padding-top: 12px;
+  }
+  .node.tier2 { border-color: rgba(237, 28, 36, 0.5); }
+  .node.tier2 .cost { background: rgba(237, 28, 36, 0.15); color: var(--color-tier2); }
+
+  .tag-row {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+
+  .arrow-h {
+    width: 52px;
+    height: 3px;
+    background: var(--color-border);
+    position: relative;
+    opacity: 0;
+    transition: opacity 400ms var(--ease-out-expo), background 400ms var(--ease-out-expo);
+  }
+  .arrow-h.in { opacity: 1; background: var(--color-text-dim); }
+  .arrow-h::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 9px solid var(--color-text-dim);
+  }
+
+  .footer-note {
+    margin-top: 56px;
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--color-text-dim);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-expo);
+  }
+  .footer-note.in { opacity: 1; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <h1><span>Routing Cascade</span> &middot; one question before every LLM call</h1>
+    <div class="headline">Does this task actually need a model?</div>
+
+    <div class="flow">
+      <div class="node task in" id="nodeTask">
+        <div class="title-line">task</div>
+      </div>
+
+      <div class="arrow-h" id="arrowTaskClassifier"></div>
+
+      <div class="node classifier" id="nodeClassifier">
+        <div class="label">Step 0</div>
+        <div class="title-line">TaskClassifier</div>
+        <div class="detail">Regex + AST rules, no model call</div>
+        <span class="cost">0 tokens</span>
+      </div>
+
+      <div class="arrow-h" id="arrowClassifierTier0"></div>
+
+      <div class="node tier0" id="nodeTier0">
+        <div class="label">Tier 0</div>
+        <div class="title-line">Deterministic solvers</div>
+        <div class="tag-row">
+          <span class="tag">arithmetic</span><span class="tag">dates</span>
+          <span class="tag">strings</span><span class="tag">units</span>
+          <span class="tag">extraction</span>
+        </div>
+        <span class="cost">0 tokens</span>
+      </div>
+
+      <div class="arrow-h" id="arrowTier0Tier1"></div>
+
+      <div class="node tier1" id="nodeTier1">
+        <div class="label">Tier 1</div>
+        <div class="title-line">Cheapest adequate model</div>
+        <div class="detail">Confidence-gated &mdash; format check + Tier-0 cross-check</div>
+        <div class="gate-note">pass &rarr; answer<br />fail &rarr; escalate once</div>
+      </div>
+
+      <div class="arrow-h" id="arrowTier1Tier2"></div>
+
+      <div class="node tier2" id="nodeTier2">
+        <div class="label">Tier 2</div>
+        <div class="title-line">Single escalation</div>
+        <div class="detail">Strongest allowed model &mdash; never loops, no self-verification</div>
+      </div>
+    </div>
+
+    <div class="footer-note" id="footerNote">No retry loop. No self-verification tax.</div>
+  </div>
+
+  <script>
+    // Deterministic staged reveal, triggered explicitly by the recorder
+    // after recordVideo has started (never on page load).
+    window.start = function start() {
+      const steps = [
+        { id: "arrowTaskClassifier", t: 300 },
+        { id: "nodeClassifier", t: 700 },
+        { id: "arrowClassifierTier0", t: 6800 },
+        { id: "nodeTier0", t: 7200 },
+        { id: "arrowTier0Tier1", t: 14500 },
+        { id: "nodeTier1", t: 14900 },
+        { id: "arrowTier1Tier2", t: 22500 },
+        { id: "nodeTier2", t: 22900 },
+        { id: "footerNote", t: 27500 },
+      ];
+      steps.forEach(function (step) {
+        setTimeout(function () {
+          document.getElementById(step.id).classList.add("in");
+        }, step.t);
+      });
+    };
+  </script>
+</body>
+</html>

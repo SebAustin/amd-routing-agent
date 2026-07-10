@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Shot 1 — Title</title>
+<style>
+  :root {
+    --color-bg: #0b0b0d;
+    --color-surface: #141416;
+    --color-surface-raised: #1c1c1f;
+    --color-border: #2a2a2e;
+    --color-text: #ececee;
+    --color-text-dim: #8b8b92;
+    --color-accent: #ED1C24;
+    --color-accent-dim: #7a1013;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: var(--color-bg);
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(237, 28, 36, 0.14), transparent 42%),
+      radial-gradient(circle at 84% 82%, rgba(237, 28, 36, 0.08), transparent 46%);
+    color: var(--color-text);
+    font-family: var(--sans);
+  }
+  .stage {
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 160px;
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 700ms var(--ease-out-expo), transform 700ms var(--ease-out-expo);
+  }
+  .brand-row.in { opacity: 1; transform: translateY(0); }
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: var(--color-accent);
+    box-shadow: 0 0 34px rgba(237, 28, 36, 0.65);
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 28px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+  .kicker strong {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+  .subline {
+    margin-top: 34px;
+    max-width: 1180px;
+    font-size: 40px;
+    line-height: 1.32;
+    color: var(--color-text-dim);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 700ms var(--ease-out-expo) 250ms, transform 700ms var(--ease-out-expo) 250ms;
+  }
+  .subline.in { opacity: 1; transform: translateY(0); }
+  .subline b { color: var(--color-text); font-weight: 600; }
+  .title {
+    margin-top: 56px;
+    font-size: 128px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 800ms var(--ease-out-expo) 550ms, transform 800ms var(--ease-out-expo) 550ms;
+  }
+  .title.in { opacity: 1; transform: translateY(0); }
+  .title .accent { color: var(--color-accent); }
+  .rule {
+    margin-top: 48px;
+    width: 0;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    box-shadow: 0 0 22px rgba(237, 28, 36, 0.6);
+    transition: width 900ms var(--ease-out-expo) 950ms;
+  }
+  .rule.in { width: 220px; }
+  .footer-tag {
+    margin-top: 32px;
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--color-text-dim);
+    opacity: 0;
+    transition: opacity 700ms var(--ease-out-expo) 1150ms;
+  }
+  .footer-tag.in { opacity: 1; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="brand-row" id="brandRow">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="kicker"><strong>AMD Hackathon ACT II</strong> &middot; Track 1</span>
+    </div>
+    <div class="subline" id="subline">
+      Fewest <b>Fireworks tokens</b> above an <b>accuracy bar</b> &mdash;<br />
+      that's the whole leaderboard.
+    </div>
+    <div class="title" id="title">Route First,<br /><span class="accent">Call Rarely</span></div>
+    <div class="rule" id="rule"></div>
+    <div class="footer-tag" id="footerTag">Hybrid Token-Efficient Routing Agent &middot; github.com/SebAustin/amd-routing-agent</div>
+  </div>
+
+  <script>
+    // Deterministic staged reveal, triggered explicitly by the recorder
+    // after recordVideo has started (never on page load).
+    window.start = function start() {
+      document.getElementById("brandRow").classList.add("in");
+      document.getElementById("subline").classList.add("in");
+      document.getElementById("title").classList.add("in");
+      document.getElementById("rule").classList.add("in");
+      document.getElementById("footerTag").classList.add("in");
+    };
+  </script>
+</body>
+</html>

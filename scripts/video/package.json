@@ -1,0 +1,12 @@
+{
+  "name": "amd-routing-agent-video",
+  "private": true,
+  "type": "module",
+  "description": "Video production scripts for the AMD Hackathon Track 1 demo (narration, slide recording, live-dashboard recording, assembly).",
+  "scripts": {
+    "record": "node record_demo.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

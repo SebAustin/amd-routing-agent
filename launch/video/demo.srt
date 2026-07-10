@@ -1,0 +1,152 @@
+1
+00:00:00,000 --> 00:00:05,039
+Track 1 doesn't score you on what your
+agent can do. It scores you on how few
+
+2
+00:00:05,119 --> 00:00:10,551
+tokens it needs to do it — while staying
+accurate. Most teams will point every task
+
+3
+00:00:10,631 --> 00:00:14,580
+at the biggest model and call it done.
+That's the expensive way.
+
+4
+00:00:14,660 --> 00:00:20,688
+Our routing agent asks one question before
+it ever calls an LLM: does this task
+
+5
+00:00:20,768 --> 00:00:26,567
+actually need one? A regex-and-AST
+classifier catches arithmetic, date math,
+
+6
+00:00:26,647 --> 00:00:31,988
+string ops, unit conversion, and
+extraction — and solves them for zero
+
+7
+00:00:32,068 --> 00:00:37,867
+tokens. Everything else goes to the
+cheapest model that can handle it, gated
+
+8
+00:00:37,947 --> 00:00:43,898
+by a confidence check. Only tasks that
+fail that gate escalate — once — to the
+
+9
+00:00:43,978 --> 00:00:48,000
+strongest model. No retries loop, no
+self-verification tax.
+
+10
+00:00:48,080 --> 00:00:54,820
+Watch the route field. 'What is 847 times
+36' — that's real arithmetic, correctly
+
+11
+00:00:54,900 --> 00:01:01,557
+answered, zero Fireworks tokens spent. No
+model was called. In our 200-task eval
+
+12
+00:01:01,637 --> 00:01:06,556
+set, 65 tasks — just under a third —
+resolve exactly this way.
+
+13
+00:01:06,636 --> 00:01:11,745
+This one needs a model — it's sentiment
+classification. The router picks the
+
+14
+00:01:11,825 --> 00:01:17,136
+cheapest model that's adequate for the
+job, gpt-oss-20b, with a minimal prompt,
+
+15
+00:01:17,216 --> 00:01:22,527
+temperature zero, and reasoning suppressed
+so it doesn't burn completion tokens
+
+16
+00:01:22,607 --> 00:01:27,851
+thinking out loud. Notice the token count
+— small, and it's what actually gets
+
+17
+00:01:27,931 --> 00:01:29,144
+billed, not an estimate.
+
+18
+00:01:29,224 --> 00:01:36,138
+Every call — Tier 0 or Tier 1 — updates a
+running ledger: raw tokens, price-weighted
+
+19
+00:01:36,218 --> 00:01:43,049
+cost, and route distribution. That's the
+same ledger the eval harness uses to score
+
+20
+00:01:43,129 --> 00:01:44,700
+the full 200-task run.
+
+21
+00:01:44,780 --> 00:01:51,716
+Across the full 200-task eval set: 99.5%
+accuracy — 199 out of 200 correct.
+
+22
+00:01:51,796 --> 00:01:59,288
+Thirty-two and a half percent of tasks
+never touch a model at all. And against an
+
+23
+00:01:59,368 --> 00:02:06,582
+honest baseline — same tasks, strongest
+model, no routing tricks — total token
+
+24
+00:02:06,662 --> 00:02:13,598
+spend drops by roughly 47 to 51%. The
+whole run costs a third of a cent and
+
+25
+00:02:13,678 --> 00:02:15,960
+finishes in under 24 seconds.
+
+26
+00:02:16,040 --> 00:02:21,245
+One more thing: the model registry
+auto-prefers Gemma at equal price tier
+
+27
+00:02:21,325 --> 00:02:27,099
+whenever the harness allows it — that's
+unit-tested and ready today. On July 7th,
+
+28
+00:02:27,179 --> 00:02:32,954
+when we probed the live Fireworks account,
+Gemma wasn't exposed on serverless, so
+
+29
+00:02:33,034 --> 00:02:38,595
+this run routes through gpt-oss and
+DeepSeek instead. The preference activates
+
+30
+00:02:38,675 --> 00:02:44,450
+automatically the moment Gemma becomes
+available — no code change needed. Routing
+
+31
+00:02:44,530 --> 00:02:47,900
+intelligence, not raw compute. That's the
+whole pitch.
+

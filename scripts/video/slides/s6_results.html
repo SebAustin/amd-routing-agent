@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Shot 6 — Results</title>
+<style>
+  :root {
+    --color-bg: #0b0b0d;
+    --color-surface: #141416;
+    --color-surface-raised: #1c1c1f;
+    --color-border: #2a2a2e;
+    --color-text: #ececee;
+    --color-text-dim: #8b8b92;
+    --color-accent: #ED1C24;
+    --color-tier0: #2fbf71;
+    --color-tier1: #ffb020;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: var(--color-bg);
+    background-image:
+      radial-gradient(circle at 85% 10%, rgba(237, 28, 36, 0.10), transparent 42%),
+      radial-gradient(circle at 10% 92%, rgba(237, 28, 36, 0.06), transparent 45%);
+    color: var(--color-text);
+    font-family: var(--sans);
+  }
+  .stage {
+    width: 1920px;
+    height: 1080px;
+    padding: 72px 160px;
+    display: flex;
+    flex-direction: column;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: 26px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin: 0 0 8px;
+  }
+  h1 span { color: var(--color-text); font-weight: 700; }
+  .headline {
+    font-size: 46px;
+    font-weight: 700;
+    margin: 0 0 40px;
+    letter-spacing: -0.01em;
+  }
+  .headline .accent { color: var(--color-accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 30px;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    padding: 0 0 16px;
+    border-bottom: 2px solid var(--color-accent);
+  }
+  thead th:last-child { text-align: right; }
+  tbody tr {
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 480ms var(--ease-out-expo), transform 480ms var(--ease-out-expo);
+  }
+  tbody tr.in { opacity: 1; transform: translateX(0); }
+  tbody tr:nth-child(odd) { background: var(--color-surface); }
+  tbody td {
+    padding: 22px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  tbody td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  tbody td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    text-align: right;
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--color-tier0);
+  }
+  tbody tr.highlight td:last-child { color: var(--color-accent); }
+  .source-note {
+    margin-top: 36px;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--color-text-dim);
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-expo);
+  }
+  .source-note.in { opacity: 1; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <h1><span>200-task live eval</span> &middot; evals/reports/tuned-live.json</h1>
+    <div class="headline">Routing beats raw compute &mdash; <span class="accent">measured, not projected</span></div>
+
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr id="row1"><td>Accuracy</td><td>99.5% (199 / 200)</td></tr>
+        <tr id="row2"><td>Zero-token tasks (Tier 0)</td><td>65 / 200 &mdash; 32.5%</td></tr>
+        <tr id="row3" class="highlight"><td>Token reduction vs. honest baseline</td><td>~47&ndash;51%</td></tr>
+        <tr id="row4"><td>Total cost, 200 tasks</td><td>$0.003636</td></tr>
+        <tr id="row5"><td>Wall-clock time, 200 tasks</td><td>23.23s</td></tr>
+        <tr id="row6"><td>Retry rate</td><td>1.45% (2 / 138 calls)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="source-note" id="sourceNote">
+      Route distribution &middot; tier0 65 &middot; gpt-oss-20b 76 &middot; gpt-oss-120b 48 &middot; deepseek-v4-flash 10 &middot; tier2 escalation 1
+    </div>
+  </div>
+
+  <script>
+    // Deterministic staged reveal, triggered explicitly by the recorder
+    // after recordVideo has started (never on page load).
+    window.start = function start() {
+      const ids = ["row1", "row2", "row3", "row4", "row5", "row6"];
+      ids.forEach(function (id, i) {
+        setTimeout(function () {
+          document.getElementById(id).classList.add("in");
+        }, 300 + i * 550);
+      });
+      setTimeout(function () {
+        document.getElementById("sourceNote").classList.add("in");
+      }, 300 + ids.length * 550 + 400);
+    };
+  </script>
+</body>
+</html>
