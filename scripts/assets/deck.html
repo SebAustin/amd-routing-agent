@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Route First, Call Rarely — Deck</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+
+  :root {
+    --color-bg: #0a0a0c;
+    --color-surface: #141416;
+    --color-surface-raised: #1b1b1e;
+    --color-border: #2a2a2e;
+    --color-text: #ececee;
+    --color-text-dim: #9a9aa1;
+    --color-accent: #ED1C24;
+    --color-accent-dim: #7a1013;
+    --color-tier0: #2fbf71;
+    --color-tier1: #ffb020;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #000;
+    font-family: var(--sans);
+    color: var(--color-text);
+  }
+
+  .slide {
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(237, 28, 36, 0.10), transparent 40%),
+      linear-gradient(180deg, #0a0a0c 0%, #0c0c0f 100%);
+    page-break-after: always;
+    break-after: page;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 48px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 48px);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.02) 100%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.02) 100%);
+  }
+
+  .kicker {
+    position: absolute;
+    left: 64px;
+    top: 44px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+  .kicker .mark {
+    width: 9px; height: 9px; border-radius: 2px;
+    background: var(--color-accent);
+    box-shadow: 0 0 14px rgba(237,28,36,0.6);
+  }
+
+  .pageno {
+    position: absolute;
+    right: 64px;
+    top: 44px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--color-text-dim);
+    letter-spacing: 0.08em;
+  }
+  .pageno b { color: var(--color-text); }
+
+  .slide h2.title {
+    position: absolute;
+    left: 64px;
+    top: 96px;
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    max-width: 1000px;
+  }
+  .slide h2.title .accent { color: var(--color-accent); }
+
+  .body {
+    position: absolute;
+    left: 64px;
+    top: 196px;
+    width: 1152px;
+    height: 470px;
+  }
+
+  .footer-rule {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 44px;
+    height: 1px;
+    background: var(--color-border);
+  }
+  .footer-brand {
+    position: absolute;
+    left: 64px;
+    bottom: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+  }
+
+  ul.bullets { list-style: none; }
+  ul.bullets li {
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 18px;
+    font-size: 21px;
+    line-height: 1.5;
+    color: var(--color-text);
+    max-width: 1050px;
+  }
+  ul.bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--color-accent);
+  }
+  ul.bullets li .dim { color: var(--color-text-dim); }
+  ul.bullets li code {
+    font-family: var(--mono);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    padding: 1px 6px;
+    border-radius: 5px;
+    font-size: 0.88em;
+  }
+
+  ol.steps { list-style: none; counter-reset: step; }
+  ol.steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 46px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    line-height: 1.5;
+    max-width: 1080px;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-accent-dim);
+    color: var(--color-accent);
+    font-family: var(--mono);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+  ol.steps li b { color: var(--color-text); }
+  ol.steps li .dim { color: var(--color-text-dim); font-size: 0.92em; }
+
+  code.k { font-family: var(--mono); color: var(--color-tier1); }
+
+  /* --- slide 1: hero statement --- */
+  .hero-stat {
+    position: absolute;
+    left: 64px;
+    top: 250px;
+    width: 1120px;
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+  }
+  .hero-stat .accent { color: var(--color-accent); }
+  .hero-sub {
+    position: absolute;
+    left: 64px;
+    top: 480px;
+    width: 1080px;
+    font-size: 20px;
+    color: var(--color-text-dim);
+    line-height: 1.6;
+  }
+
+  /* --- slide 3: architecture diagram --- */
+  .arch {
+    display: flex;
+    align-items: stretch;
+    gap: 22px;
+    margin-top: 8px;
+  }
+  .arch-node {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    width: 220px;
+    flex-shrink: 0;
+  }
+  .arch-node.classifier { border-color: var(--color-border); }
+  .arch-node .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-bottom: 8px;
+  }
+  .arch-node .name {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .arch-node .desc {
+    font-size: 13px;
+    color: var(--color-text-dim);
+    line-height: 1.45;
+  }
+  .arch-col { display: flex; flex-direction: column; gap: 14px; width: 330px; }
+  .tier-node {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--tier-color, var(--color-accent));
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .tier-node .name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .tier-node .desc { font-size: 12.5px; color: var(--color-text-dim); line-height: 1.4; }
+  .arrow {
+    align-self: center;
+    color: var(--color-text-dim);
+    font-family: var(--mono);
+    font-size: 20px;
+  }
+
+  /* --- slide 5: results table + bars --- */
+  table.results {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16.5px;
+  }
+  table.results th, table.results td {
+    text-align: left;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  table.results th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    font-weight: 600;
+  }
+  table.results td.val {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  table.results td.val .accent { color: var(--color-accent); }
+  table.results tr.miss td.val { color: var(--color-tier1); }
+
+  .route-bars { margin-top: 18px; }
+  .route-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 9px;
+  }
+  .route-label {
+    width: 220px;
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--color-text-dim);
+  }
+  .route-track {
+    flex: 1;
+    height: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .route-fill {
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .route-count {
+    width: 90px;
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  /* --- slide 6/7 badges --- */
+  .flag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 5px;
+    margin-right: 8px;
+  }
+  .flag.miss { background: rgba(255,176,32,0.12); color: var(--color-tier1); border: 1px solid rgba(255,176,32,0.4); }
+  .flag.honest { background: rgba(47,191,113,0.1); color: var(--color-tier0); border: 1px solid rgba(47,191,113,0.4); }
+
+  /* --- slide 8 links --- */
+  .link-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    max-width: 760px;
+  }
+  .link-card .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-dim); margin-bottom: 6px; }
+  .link-card .v { font-family: var(--mono); font-size: 19px; font-weight: 700; color: var(--color-text); }
+  .link-card .v .accent { color: var(--color-accent); }
+  .link-card .note { margin-top: 6px; font-size: 13px; color: var(--color-text-dim); }
+</style>
+</head>
+<body>
+
+  <!-- ============ SLIDE 1 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>01</b> / 08</div>
+    <div class="hero-stat">The cheapest correct answer wins <span class="accent">&mdash; not the smartest-sounding one.</span></div>
+    <div class="hero-sub">
+      Track 1 is scored on Fireworks token count above an accuracy threshold &mdash; not on
+      feature count. At hackathon scale, the difference between calling the strongest model
+      every time and calling the right thing every time is the entire leaderboard.
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 2 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>02</b> / 08</div>
+    <h2 class="title">The Insight</h2>
+    <div class="body">
+      <ul class="bullets" style="margin-top: 30px;">
+        <li>Most tasks in a real workload don't need a frontier model.</li>
+        <li>A meaningful fraction don't need a model at all.</li>
+        <li><code>847 &times; 36</code> is arithmetic, not a reasoning problem &mdash; sentiment
+          classification of one sentence doesn't need chain-of-thought.</li>
+        <li class="dim" style="font-size:24px; font-weight:700; color:var(--color-text); margin-top: 36px;">
+          The win isn't a better model. It's not calling one when you don't have to &mdash; and
+          calling the cheapest adequate one when you do.
+        </li>
+      </ul>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 3 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>03</b> / 08</div>
+    <h2 class="title">Architecture: <span class="accent">The Cascade</span></h2>
+    <div class="body">
+      <div class="arch" style="margin-top: 34px;">
+        <div class="arch-node classifier">
+          <div class="tag">Step 0</div>
+          <div class="name">TaskClassifier</div>
+          <div class="desc">0 tokens &middot; regex / heuristics decide task type before any
+            network call.</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="arch-col">
+          <div class="tier-node" style="--tier-color:#2fbf71;">
+            <div class="name">Tier 0 &middot; deterministic solvers</div>
+            <div class="desc">0 tokens. Arithmetic (safe AST eval), date math, string ops,
+              unit conversion, regex extraction. Fires only when it can self-validate.</div>
+          </div>
+          <div class="tier-node" style="--tier-color:#ffb020;">
+            <div class="name">Tier 1 &middot; cheapest adequate model</div>
+            <div class="desc">Minimal prompt, temperature=0, reasoning suppressed &rarr;
+              ConfidenceGate (format validation + Tier-0 cross-check + logprobs secondary).
+              Pass &rarr; answer. Fail &rarr; Tier 2.</div>
+          </div>
+          <div class="tier-node" style="--tier-color:#ED1C24;">
+            <div class="name">Tier 2 &middot; single escalation</div>
+            <div class="desc">Escalates once to the strongest allowed model. Never loops.
+              No LLM self-verification.</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 26px; font-size: 14.5px; color: var(--color-text-dim); max-width: 1080px; line-height: 1.6;">
+        Single escalation, never loops &mdash; a deliberate token-safety property, not a
+        limitation. The confidence gate's primary check is deterministic (format + Tier-0
+        cross-check); logprobs are secondary because live probing showed the token stream
+        mixes reasoning-channel tokens with answer tokens.
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 4 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>04</b> / 08</div>
+    <h2 class="title">The Token-Efficiency Toolbox</h2>
+    <div class="body">
+      <ol class="steps" style="margin-top: 26px;">
+        <li><b>Zero-token Tier 0</b> &mdash; deterministic solvers answer arithmetic, dates,
+          strings, units, and extraction without touching an LLM.</li>
+        <li><b>Cheapest-adequate routing</b> &mdash; Tier 1 always picks the lowest-cost model
+          that can handle the task's capability tag, not the biggest available.</li>
+        <li><b>Reasoning suppression</b> &mdash; per-model profiles stop models like
+          <code class="k">gpt-oss-20b</code> from burning completion tokens on hidden
+          <code class="k">reasoning_content</code>.</li>
+        <li><b>Minimal prompts + answer-only contracts</b> &mdash; &le;10-token system text,
+          per-task-type <code class="k">max_tokens</code> caps and stop sequences.</li>
+        <li><b>Single-escalation confidence gate</b> &mdash; format + Tier-0 cross-check
+          (logprobs secondary) before falling through to Tier 2 exactly once &mdash; never a
+          self-verification loop.</li>
+      </ol>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 5 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>05</b> / 08</div>
+    <h2 class="title">Results <span class="accent">&mdash; 200-task live eval</span></h2>
+    <div class="body">
+      <table class="results" style="margin-top: 22px;">
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Accuracy</td><td class="val">99.5<span class="accent">%</span> (199/200)</td></tr>
+        <tr><td>Zero-token tasks (Tier 0)</td><td class="val">65/200 &mdash; 32.5<span class="accent">%</span></td></tr>
+        <tr><td>Token reduction vs. honest baseline</td><td class="val">~47&ndash;51<span class="accent">%</span></td></tr>
+        <tr><td>Total price-weighted cost, 200 tasks</td><td class="val">$0.003636</td></tr>
+        <tr><td>Retry rate</td><td class="val">2.1<span class="accent">%</span></td></tr>
+      </table>
+
+      <div class="route-bars">
+        <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-dim); margin: 18px 0 10px;">Route distribution &middot; 200 tasks</div>
+        <div class="route-row">
+          <div class="route-label">Tier 0 (0 tokens)</div>
+          <div class="route-track"><div class="route-fill" style="width:86.7%; background:#2fbf71;"></div></div>
+          <div class="route-count" style="color:#2fbf71;">65</div>
+        </div>
+        <div class="route-row">
+          <div class="route-label">gpt-oss-20b</div>
+          <div class="route-track"><div class="route-fill" style="width:100%; background:#ffb020;"></div></div>
+          <div class="route-count" style="color:#ffb020;">76</div>
+        </div>
+        <div class="route-row">
+          <div class="route-label">gpt-oss-120b</div>
+          <div class="route-track"><div class="route-fill" style="width:64%; background:#ffb020;"></div></div>
+          <div class="route-count" style="color:#ffb020;">48</div>
+        </div>
+        <div class="route-row">
+          <div class="route-label">deepseek-v4-flash</div>
+          <div class="route-track"><div class="route-fill" style="width:13.3%; background:#ffb020;"></div></div>
+          <div class="route-count" style="color:#ffb020;">10</div>
+        </div>
+        <div class="route-row">
+          <div class="route-label">Tier 2 escalation</div>
+          <div class="route-track"><div class="route-fill" style="width:2.7%; background:#ED1C24;"></div></div>
+          <div class="route-count" style="color:#ED1C24;">1</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 6 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>06</b> / 08</div>
+    <h2 class="title">Honest Limitations</h2>
+    <div class="body">
+      <ul class="bullets" style="margin-top: 24px;">
+        <li><span class="flag miss">Not met</span><b>SC2 stretch target (&ge;60% token reduction).</b>
+          Measured 47&ndash;51%. The remaining cost floor is structural: gpt-oss's ~82-token
+          fixed chat-template overhead plus a ~96&ndash;128-completion-token floor required to
+          let its hidden reasoning channel finish without truncating.</li>
+        <li><b>One residual eval failure</b> (<code>summarization-003</code>): a correct
+          paraphrase drops the literal keyword the <code>contains_all</code> grader requires.
+          Diminishing returns to chase further on a 5-task category.</li>
+        <li><b>Gemma is not live on this Fireworks account today</b> &mdash; probed July 7, all
+          Gemma variants return <code>NOT_FOUND</code>. See next slide.</li>
+        <li><span class="flag honest">Counted, not hidden</span><b>Retry accounting is real:</b>
+          1.45% retry rate, and retry tokens are counted in the reported totals, not subtracted
+          out.</li>
+      </ul>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 7 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>07</b> / 08</div>
+    <h2 class="title">Gemma &amp; the AMD Stack</h2>
+    <div class="body">
+      <ul class="bullets" style="margin-top: 26px;">
+        <li>The model registry auto-prefers <code>gemma*</code> models at equal price tier &mdash;
+          this is unit-tested and active in the code today, independent of whether Gemma is
+          reachable.</li>
+        <li>Live probe (July 7, real API key, <code>GET /models</code> + direct calls): all
+          Gemma variants returned <code>NOT_FOUND</code> on this Fireworks serverless account.</li>
+        <li>The moment a <code>gemma*</code> model is added to <code>ALLOWED_MODELS</code> &mdash;
+          via a hackathon proxy or AMD Developer Cloud self-hosting &mdash; the registry
+          preference activates with zero code changes.</li>
+        <li style="margin-top: 10px; font-size: 22px; font-weight: 700;">
+          We are not claiming Gemma ran in this eval. We are claiming the routing logic already
+          knows how to prefer it.
+        </li>
+      </ul>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+  <!-- ============ SLIDE 8 ============ -->
+  <section class="slide">
+    <div class="grid"></div>
+    <div class="kicker"><span class="mark"></span> Route First, Call Rarely</div>
+    <div class="pageno"><b>08</b> / 08</div>
+    <h2 class="title">Team, Repo, Links</h2>
+    <div class="body">
+      <div class="link-card" style="margin-top: 20px;">
+        <div class="k">Repository</div>
+        <div class="v">github.com/<span class="accent">SebAustin</span>/amd-routing-agent</div>
+        <div class="note">Public &middot; CI green (verified)</div>
+      </div>
+      <div class="link-card">
+        <div class="k">Live Demo &mdash; Hugging Face Space</div>
+        <div class="v">sebaustin-amd-routing-agent-demo.hf.space</div>
+        <div class="note">Verified live 2026-07-07</div>
+      </div>
+      <div style="margin-top: 22px; font-size: 15px; color: var(--color-text-dim); line-height: 1.7;">
+        Docs: <code>README.md</code>, <code>PLAN.md</code>, <code>SECURITY.md</code>,
+        <code>DEPLOYMENT.md</code> in the repo.<br>
+        Built for the AMD Developer Cloud Hackathon, ACT II &mdash; Track 1.
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-brand">AMD Developer Cloud Hackathon &middot; ACT II &middot; Track 1</div>
+  </section>
+
+</body>
+</html>

@@ -36,6 +36,10 @@ Alternate (176 chars), leads with the leaderboard framing:
 
 ## Long Description (400–600 words)
 
+_Superseded by the final ≤2000-char version below, which is what should be_
+_pasted into the lablab.ai submission form. The 400–600-word draft is kept_
+_here only as the original working copy that fed the trim._
+
 ## The problem
 
 Track 1 of the AMD Developer Cloud Hackathon scores submissions on total
@@ -82,11 +86,11 @@ estimated.
 - **~47–51% token reduction** versus an honest baseline (same 200 tasks,
   strongest allowed model, generic prompts, reasoning suppression explicitly
   disabled to reflect a genuinely naive deployment).
-- **$0.003742 total price-weighted cost** for the full 200-task run,
-  completed in **25.88 seconds**.
-- **2.1% retry rate** — and retry tokens are counted in every total above,
+- **$0.003636 total price-weighted cost** for the full 200-task run,
+  completed in **23.23 seconds**.
+- **1.45% retry rate** — and retry tokens are counted in every total above,
   not subtracted out.
-- Route distribution: Tier 0 handled 65 tasks; `gpt-oss-20b` handled 75;
+- Route distribution: Tier 0 handled 65 tasks; `gpt-oss-20b` handled 76;
   `gpt-oss-120b` handled 48; `deepseek-v4-flash` handled 10; only 2 tasks
   needed Tier 2 escalation.
 
@@ -107,6 +111,52 @@ against a live Gemma endpoint in this eval.
 This submission treats "fewest tokens above an accuracy bar" as an
 architecture problem, not a prompting problem. The routing decision — not
 the model — is where the token budget is won or lost.
+
+---
+
+## Long Description (final — ≤2000 chars)
+
+**Character count: 1884 (verified with Python `len()` on the exact field**
+**text — plain `wc -m` returns a byte count under a non-UTF-8 locale and**
+**over-reports on the em dashes in this text; character count is what the**
+**lablab.ai 2000-char field limit means). Paste this block, not the**
+**400–600-word draft above, into the lablab.ai "Long Description" field.**
+
+> Track 1 scores submissions on Fireworks tokens spent above an accuracy
+> bar, not on feature count. The naive path — route every task to the
+> strongest model — is the most expensive way to pass. Most tasks don't
+> need a frontier model, and a meaningful share don't need a model at all.
+>
+> Route First, Call Rarely is a tiered routing cascade. A zero-token
+> classifier (regex/heuristics) sorts each task first. Tier 0 solves
+> arithmetic, dates, strings, units, and extraction locally with
+> deterministic solvers — no API call, ever — and only answers when it can
+> self-validate. Everything else goes to Tier 1: the cheapest Fireworks
+> model that can handle the task, minimal prompts, temperature 0, and
+> per-model reasoning suppression so models like gpt-oss-20b don't burn
+> tokens on hidden chain-of-thought. A confidence gate (format validation +
+> Tier-0 cross-check, logprobs secondary) accepts the answer or escalates —
+> exactly once — to the strongest allowed model. No retry loops, no
+> self-verification.
+>
+> Measured on the full 200-task live eval against the real Fireworks API:
+> 99.5% accuracy (199/200), 32.5% of tasks (65/200) resolved with zero
+> Fireworks tokens, ~47-51% token reduction vs. an honest naive baseline,
+> $0.003636 total price-weighted cost, 1.45% retry rate counted in every
+> total above.
+>
+> What makes it different: the comparison baseline is deliberately fair —
+> reasoning suppression explicitly disabled, not a strawman. Routing logic
+> sits behind an isolated adapter contract, so swapping models never
+> touches it. The model registry already prefers gemma* models at equal
+> price tier — unit-tested and dormant, since Gemma wasn't reachable on our
+> Fireworks account when probed July 7.
+>
+> Stack: Python, FastAPI demo dashboard, Fireworks AI on AMD infrastructure,
+> Docker, pytest, CI.
+>
+> Repo: github.com/SebAustin/amd-routing-agent
+> Demo: https://sebaustin-amd-routing-agent-demo.hf.space
 
 ---
 

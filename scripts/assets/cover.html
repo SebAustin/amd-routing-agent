@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Route First, Call Rarely — Cover</title>
+<style>
+  :root {
+    --color-bg: #0a0a0c;
+    --color-surface: #141416;
+    --color-border: #2a2a2e;
+    --color-text: #ececee;
+    --color-text-dim: #9a9aa1;
+    --color-accent: #ED1C24;
+    --color-accent-dim: #7a1013;
+    --color-tier0: #2fbf71;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: var(--color-bg);
+    font-family: var(--sans);
+    color: var(--color-text);
+  }
+
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    background:
+      radial-gradient(circle at 82% 52%, rgba(237, 28, 36, 0.16), transparent 44%),
+      radial-gradient(circle at 8% 90%, rgba(237, 28, 36, 0.07), transparent 40%),
+      linear-gradient(180deg, #0a0a0c 0%, #0c0c0f 60%, #0a0a0c 100%);
+  }
+
+  /* subtle grid texture for depth */
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 64px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 64px);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.05) 100%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.05) 100%);
+  }
+
+  .frame-edge {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 220px rgba(0,0,0,0.55);
+    pointer-events: none;
+  }
+
+  /* eyebrow */
+  .eyebrow {
+    position: absolute;
+    left: 120px;
+    top: 118px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow .mark {
+    width: 12px;
+    height: 12px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(237, 28, 36, 0.65);
+  }
+  .eyebrow span {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+  .eyebrow span b { color: var(--color-accent); font-weight: 700; }
+
+  /* title */
+  .title {
+    position: absolute;
+    left: 118px;
+    top: 208px;
+    width: 1080px;
+  }
+  .title h1 {
+    font-size: 132px;
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+  }
+  .title h1 .accent { color: var(--color-accent); }
+
+  .subtitle {
+    position: absolute;
+    left: 122px;
+    top: 606px;
+    width: 900px;
+    font-size: 27px;
+    line-height: 1.5;
+    color: var(--color-text-dim);
+    font-weight: 400;
+  }
+  .subtitle b { color: var(--color-text); font-weight: 600; }
+
+  /* stat strip */
+  .stats {
+    position: absolute;
+    left: 122px;
+    top: 730px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .stat {
+    font-family: var(--mono);
+    padding: 0 30px;
+    border-left: 2px solid var(--color-accent-dim);
+  }
+  .stat:first-child { padding-left: 0; border-left: none; }
+  .stat .num {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+  .stat .num .accent { color: var(--color-accent); }
+  .stat .label {
+    margin-top: 6px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .footer-tag {
+    position: absolute;
+    left: 122px;
+    bottom: 76px;
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--color-text-dim);
+    letter-spacing: 0.04em;
+  }
+  .footer-tag b { color: var(--color-text); }
+
+  .footer-rule {
+    position: absolute;
+    left: 122px;
+    bottom: 116px;
+    width: 640px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-accent-dim) 0%, transparent 100%);
+    opacity: 0.7;
+  }
+
+  .watermark {
+    position: absolute;
+    left: 40px;
+    bottom: -128px;
+    font-family: var(--mono);
+    font-weight: 800;
+    font-size: 420px;
+    letter-spacing: -0.04em;
+    color: rgba(237, 28, 36, 0.045);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* ---- funnel / cascade motif ---- */
+  .funnel-wrap {
+    position: absolute;
+    left: 1150px;
+    top: 300px;
+    width: 700px;
+    height: 560px;
+  }
+
+  .funnel-shape {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(139,139,146,0.08) 0%, rgba(237,28,36,0.05) 55%, rgba(237,28,36,0.16) 100%);
+    clip-path: polygon(0% 7.14%, 0% 92.86%, 100% 46.43%, 100% 53.57%);
+    border-top: 1px solid rgba(237,28,36,0.22);
+    border-bottom: 1px solid rgba(237,28,36,0.22);
+  }
+
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .dot-resolved {
+    background: var(--color-tier0);
+    box-shadow: 0 0 10px rgba(47, 191, 113, 0.55);
+  }
+
+  .tier0-tag {
+    position: absolute;
+    left: -18px;
+    top: -142px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(47, 191, 113, 0.08);
+    border: 1px solid rgba(47, 191, 113, 0.4);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .tier0-tag .dotmark {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--color-tier0);
+    box-shadow: 0 0 10px rgba(47, 191, 113, 0.7);
+  }
+  .tier0-tag span {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #b7f0cf;
+  }
+
+  .llm-node {
+    position: absolute;
+    right: -18px;
+    top: 234px;
+    width: 108px;
+    height: 92px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, #ff3b42 0%, var(--color-accent) 55%, #a8141a 100%);
+    box-shadow: 0 0 60px rgba(237, 28, 36, 0.55), 0 14px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .llm-node .label {
+    font-family: var(--mono);
+    font-weight: 800;
+    font-size: 24px;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  .llm-node .sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .llm-caption {
+    position: absolute;
+    right: -70px;
+    top: 336px;
+    width: 240px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--color-text-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .entry-tag {
+    position: absolute;
+    left: -6px;
+    top: -34px;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="grid"></div>
+
+    <div class="eyebrow">
+      <div class="mark"></div>
+      <span>AMD Dev Cloud Hackathon <b>&middot; ACT II &middot; Track 1</b></span>
+    </div>
+
+    <div class="title">
+      <h1>Route First,<br>Call <span class="accent">Rarely.</span></h1>
+    </div>
+
+    <div class="subtitle">
+      <b>Hybrid token-efficient routing agent</b> &mdash; most tasks resolve before
+      the model is ever called.
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">99.5<span class="accent">%</span></div>
+        <div class="label">Accuracy</div>
+      </div>
+      <div class="stat">
+        <div class="num">32.5<span class="accent">%</span></div>
+        <div class="label">Zero-Token</div>
+      </div>
+      <div class="stat">
+        <div class="num">~50<span class="accent">%</span></div>
+        <div class="label">Fewer Tokens</div>
+      </div>
+    </div>
+
+    <div class="watermark">0x</div>
+    <div class="footer-rule"></div>
+    <div class="footer-tag">github.com/SebAustin/amd-routing-agent &nbsp;&middot;&nbsp; <b>Live demo</b> &mdash; sebaustin-amd-routing-agent-demo.hf.space</div>
+
+    <div class="funnel-wrap">
+      <div class="funnel-shape"></div>
+      <div class="entry-tag">200 tasks in</div>
+
+      <div class="tier0-tag">
+        <div class="dotmark"></div>
+        <span>TIER 0 &middot; 0 TOKENS</span>
+      </div>
+
+      <div class="dot dot-resolved" style="left:106px;top:-69px;width:8px;height:8px;"></div>
+      <div class="dot dot-resolved" style="left:47px;top:-54px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:112px;top:27px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:99px;top:-69px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:43px;top:-16px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:94px;top:9px;width:9px;height:9px;"></div>
+      <div class="dot dot-resolved" style="left:92px;top:-50px;width:9px;height:9px;"></div>
+      <div class="dot dot-resolved" style="left:52px;top:21px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:115px;top:-29px;width:7px;height:7px;"></div>
+      <div class="dot dot-resolved" style="left:42px;top:6px;width:7px;height:7px;"></div>
+
+      <div class="dot dot-model" style="left:68px;top:337px;width:6px;height:6px;background:rgb(149,128,135);opacity:0.59;"></div>
+      <div class="dot dot-model" style="left:89px;top:225px;width:7px;height:7px;background:rgb(152,125,132);opacity:0.61;"></div>
+      <div class="dot dot-model" style="left:98px;top:228px;width:7px;height:7px;background:rgb(153,124,131);opacity:0.61;"></div>
+      <div class="dot dot-model" style="left:100px;top:165px;width:7px;height:7px;background:rgb(153,123,130);opacity:0.61;"></div>
+      <div class="dot dot-model" style="left:103px;top:188px;width:7px;height:7px;background:rgb(153,123,130);opacity:0.62;"></div>
+      <div class="dot dot-model" style="left:181px;top:431px;width:7px;height:7px;background:rgb(164,110,118);opacity:0.67;"></div>
+      <div class="dot dot-model" style="left:184px;top:331px;width:7px;height:7px;background:rgb(165,110,117);opacity:0.67;"></div>
+      <div class="dot dot-model" style="left:212px;top:316px;width:8px;height:8px;background:rgb(169,105,113);opacity:0.69;"></div>
+      <div class="dot dot-model" style="left:219px;top:174px;width:8px;height:8px;background:rgb(170,104,112);opacity:0.69;"></div>
+      <div class="dot dot-model" style="left:275px;top:346px;width:8px;height:8px;background:rgb(177,95,103);opacity:0.73;"></div>
+      <div class="dot dot-model" style="left:372px;top:204px;width:9px;height:9px;background:rgb(191,80,87);opacity:0.79;"></div>
+      <div class="dot dot-model" style="left:382px;top:254px;width:9px;height:9px;background:rgb(193,78,86);opacity:0.8;"></div>
+      <div class="dot dot-model" style="left:398px;top:383px;width:9px;height:9px;background:rgb(195,76,83);opacity:0.81;box-shadow:0 0 6px rgba(237,28,36,0.34);"></div>
+      <div class="dot dot-model" style="left:414px;top:308px;width:9px;height:9px;background:rgb(197,73,81);opacity:0.82;box-shadow:0 0 6px rgba(237,28,36,0.36);"></div>
+      <div class="dot dot-model" style="left:423px;top:291px;width:9px;height:9px;background:rgb(198,72,79);opacity:0.82;box-shadow:0 0 6px rgba(237,28,36,0.36);"></div>
+      <div class="dot dot-model" style="left:477px;top:310px;width:9px;height:9px;background:rgb(206,63,71);opacity:0.86;box-shadow:0 0 7px rgba(237,28,36,0.41);"></div>
+      <div class="dot dot-model" style="left:492px;top:332px;width:10px;height:10px;background:rgb(208,61,69);opacity:0.87;box-shadow:0 0 7px rgba(237,28,36,0.42);"></div>
+      <div class="dot dot-model" style="left:540px;top:313px;width:10px;height:10px;background:rgb(215,53,61);opacity:0.9;box-shadow:0 0 8px rgba(237,28,36,0.46);"></div>
+      <div class="dot dot-model" style="left:554px;top:250px;width:10px;height:10px;background:rgb(217,51,59);opacity:0.91;box-shadow:0 0 8px rgba(237,28,36,0.48);"></div>
+      <div class="dot dot-model" style="left:565px;top:231px;width:10px;height:10px;background:rgb(218,49,57);opacity:0.91;box-shadow:0 0 8px rgba(237,28,36,0.48);"></div>
+      <div class="dot dot-model" style="left:574px;top:262px;width:10px;height:10px;background:rgb(219,48,56);opacity:0.92;box-shadow:0 0 8px rgba(237,28,36,0.49);"></div>
+      <div class="dot dot-model" style="left:643px;top:267px;width:11px;height:11px;background:rgb(229,37,45);opacity:0.96;box-shadow:0 0 9px rgba(237,28,36,0.55);"></div>
+
+      <div class="llm-node">
+        <div class="label">LLM</div>
+        <div class="sub">rare call</div>
+      </div>
+      <div class="llm-caption">cheapest adequate model &middot; single escalation, never a loop</div>
+    </div>
+
+    <div class="frame-edge"></div>
+  </div>
+</body>
+</html>
